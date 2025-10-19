@@ -829,7 +829,8 @@ Prove that <span class="math inline">|\gamma - \gamma_n| \leq \frac1n</span>.</l
 </div>
 </div>
 </div>
-<p>In the graph above, <span class="math inline">\frac1k</span> is the area under the red line, <span class="math inline">\log \frac{k}{k-1}</span> is the area under the blue line. We upper bound the absolute value of the error between these areas, by computing the area between <span class="math inline">y = \frac1x</span> and <span class="math inline">y=\frac1{x+1}</span>: <span class="math inline">\begin{align}
+<p>In the graph above, <span class="math inline">\frac1k</span> is the area under the red line, <span class="math inline">\log \frac{k}{k-1}</span> is the area under the blue line. We upper bound the absolute value of the error between these areas, by computing the area between <span class="math inline">y = \frac1x</span> and <span class="math inline">y=\frac1{x+1}</span>:</p>
+<p><span class="math display">\begin{align}
     0 \leq \gamma_n - \gamma_N
     %
     &amp;\leq \sum_{k=n+1}^N \left( \log \frac{k}{k-1} - \frac{1}{k} \right) \\
@@ -839,7 +840,8 @@ Prove that <span class="math inline">|\gamma - \gamma_n| \leq \frac1n</span>.</l
     = \int_{n}^\infty \frac{1}{x(x+1)} \mathrm{d}x \\
     %
     &amp;\leq \int_{n}^\infty \frac{1}{x^2} \mathrm{d}x = \frac1n
-\end{align}</span> Here, we have shown that <span class="math inline">(\gamma_n)</span> is a Cauchy sequence and thus it converges, and we have the same estimate for <span class="math inline">\gamma_n - \gamma</span> by taking the limit in <span class="math inline">N</span>. <span class="math inline">\text{    }\square</span></p>
+\end{align}</span></p>
+<p>Here, we have shown that <span class="math inline">(\gamma_n)</span> is a Cauchy sequence and thus it converges, and we have the same estimate for <span class="math inline">\gamma_n - \gamma</span> by taking the limit in <span class="math inline">N</span>. <span class="math inline">\text{    }\square</span></p>
 
 
 </section>
@@ -918,7 +920,7 @@ Prove that <span class="math inline">|\gamma - \gamma_n| \leq \frac1n</span>.</l
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/z\.umn\.edu\/Math5485");
+        var filterRegex = new RegExp("https:\/\/math5485\.github\.io\/site\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

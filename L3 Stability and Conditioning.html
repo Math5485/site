@@ -867,7 +867,7 @@ Here, we see that <span class="math inline">x_n \to \xi \approx 1.26 \in [1,2]</
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/z\.umn\.edu\/Math5485");
+        var filterRegex = new RegExp("https:\/\/math5485\.github\.io\/site\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

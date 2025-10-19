@@ -1,1 +1,1 @@
-Sitemap: https://z.umn.edu/Math5485/sitemap.xml
+Sitemap: https://math5485.github.io/site/sitemap.xml

@@ -985,7 +985,7 @@ Fix <span class="math inline">a, x_1 &gt; 0</span> and define the iteration <spa
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/z\.umn\.edu\/Math5485");
+        var filterRegex = new RegExp("https:\/\/math5485\.github\.io\/site\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
