@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; A3: Solving nonlinear equations in 1d – Math 5485</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./A4 Solution.html" rel="next">
+<link href="./A2 Solutions.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-70a47bd5681a7291082a5b9f83d58762.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<link rel="icon" href="pi.ico" type="image/icon type">
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A1 Solution.html">Assignments</a></li><li class="breadcrumb-item"><a href="./A3 Solutions.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">A3: Solving nonlinear equations in 1d</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Math 5485</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L1 Introduction to Math 5485.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L2 How computers add.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How do computers add?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L3 Stability and Conditioning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning &amp; Stability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L4 Solving nonlinear equations in 1d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Solving nonlinear equations in 1d</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L5 Solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exercises (Chapter 2)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L6-7 Solving nonlinear equations in 1d II.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Solving nonlinear equations in 1d II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L8 Polynomial Interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Chapter 3: Polynomial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L9 Polynomial Interpolation II.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Polynomial Interpolation II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L10 Polynomial Interpolation III.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Polynomial Interpolation III</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L11 Exercises.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exercises (Chapter 3)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L12 Newton-Cotes Quadrature.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Newton-Cotes Quadrature</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Assignments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A1 Solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">A1: Jupyter Notebooks, LaTeX &amp; Julia</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A2 Solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">A2: Floating-point numbers, conditioning, and order of convergence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A3 Solutions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">A3: Solving nonlinear equations in 1d</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A4 Solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">A4: Solving nonlinear equations in 1d II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A5 Solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">A5: Solving nonlinear equations in 1d III</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a.-lambert-w-function" id="toc-a.-lambert-w-function" class="nav-link active" data-scroll-target="#a.-lambert-w-function"><span class="header-section-number">14.1</span> A. Lambert W function</a></li>
+  <li><a href="#b.-bisection-method" id="toc-b.-bisection-method" class="nav-link" data-scroll-target="#b.-bisection-method"><span class="header-section-number">14.2</span> B. Bisection Method</a></li>
+  </ul>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="0 Syllabus.pdf"><i class="bi bi-file-pdf"></i>Syllabus</a></li><li><a href="https://fncbook.com/"><i class="bi bi-link-45deg"></i>FNC book</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A1 Solution.html">Assignments</a></li><li class="breadcrumb-item"><a href="./A3 Solutions.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">A3: Solving nonlinear equations in 1d</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">A3: Solving nonlinear equations in 1d</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="a.-lambert-w-function" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="a.-lambert-w-function"><span class="header-section-number">14.1</span> A. Lambert W function</h2>
+<p>In A1, you were asked to prove that the <em>Lambert W function</em> (also called the <em>product-log function</em>) is a well-defined function <span class="math inline">W : [0,\infty) \to [0,\infty)</span> satisfying <span class="math inline">W(a) e^{W(a)} = a</span>. Define <span class="math inline">\Omega := W(1)</span>. Last time, essentially by the change of sign theorem, you showed that <span class="math inline">\Omega \in [0.56, 0.58]</span>.</p>
+<ol type="1">
+<li>✍ Show that <span class="math inline">\Omega</span> is a fixed point of <span class="math inline">g</span> and <span class="math inline">h</span> as defined by</li>
+</ol>
+<p><span class="math display">\begin{align}
+    g(x) = e^{-x}, \qquad h(x) = \log \left|\frac{1}{x}\right|
+\end{align}</span></p>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>We have <span class="math inline">\Omega = W(1)</span> and so <span class="math inline">\Omega e^{\Omega} = 1</span> and <span class="math inline">\Omega = e^{-\Omega} = g(\Omega)</span>. We also have <span class="math inline">e^{\Omega} = \Omega^{-1} = |\Omega^{-1}|</span> because <span class="math inline">\Omega &gt; 0</span>. Taking logarithms on both sides gives <span class="math inline">\Omega = \log |\Omega^{-1}| = h(\Omega)</span>.</p>
+</div>
+<ol start="2" type="1">
+<li>💻 Show numerically that <span class="math inline">x_{n+1} = g(x_n)</span> converges and <span class="math inline">y_{n+1} = h(y_n)</span> diverges for a few different choices of <span class="math inline">x_1</span> and <span class="math inline">y_1</span>.</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>We will use the function <code>simple_iteration( g, x1 )</code> as defined above:</p>
+</div>
+<div id="1c2b0b15" class="cell" data-execution_count="96">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">printErrors</span>( x ) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(x) x (@.<span class="fu">abs</span>(x<span class="op">-</span>Ω))]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># you can also add colour!</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    h1 <span class="op">=</span> <span class="fu">Highlighter</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            (data, i, j) <span class="op">-&gt;</span> (j <span class="op">==</span> <span class="fl">3</span>) <span class="op">&amp;&amp;</span> (data[i, j] <span class="op">&gt;</span> <span class="fl">1e-2</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            crayon<span class="st">"red bold"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    );</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    h2 <span class="op">=</span> <span class="fu">Highlighter</span>(</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            (data, i, j) <span class="op">-&gt;</span> (j <span class="op">==</span> <span class="fl">3</span>) <span class="op">&amp;&amp;</span> (data[i, j] <span class="op">&lt;</span> <span class="fl">1e-5</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            crayon<span class="st">"green bold"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    );</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pretty_table</span>( </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        data;</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        header <span class="op">=</span> [<span class="st">"n"</span>, <span class="st">"x[n]"</span>, <span class="st">"|x[n] - Ω|"</span>],</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        highlighters <span class="op">=</span> (h1, h2) </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Iteration xₙ₊₁ = g(xₙ) with x₁ = 1"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">printErrors</span>( <span class="fu">simple_iteration</span>( g, <span class="fl">1</span>. ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Iteration xₙ₊₁ = g(xₙ) with x₁ = 1
+
+┌──────┬──────────┬─────────────┐
+
+│<span class="ansi-bold">    n </span>│<span class="ansi-bold">     x[n] </span>│<span class="ansi-bold">  |x[n] - Ω| </span>│
+
+├──────┼──────────┼─────────────┤
+
+│  1.0 │      1.0 │<span class="ansi-red-fg ansi-bold">    0.432857 </span>│
+
+│  2.0 │ 0.367879 │<span class="ansi-red-fg ansi-bold">    0.199264 </span>│
+
+│  3.0 │ 0.692201 │<span class="ansi-red-fg ansi-bold">    0.125057 </span>│
+
+│  4.0 │ 0.500474 │<span class="ansi-red-fg ansi-bold">   0.0666698 </span>│
+
+│  5.0 │ 0.606244 │<span class="ansi-red-fg ansi-bold">   0.0391002 </span>│
+
+│  6.0 │ 0.545396 │<span class="ansi-red-fg ansi-bold">   0.0217475 </span>│
+
+│  7.0 │ 0.579612 │<span class="ansi-red-fg ansi-bold">    0.012469 </span>│
+
+│  8.0 │ 0.560115 │  0.00702783 │
+
+│  9.0 │ 0.571143 │  0.00399982 │
+
+│ 10.0 │ 0.564879 │  0.00226394 │
+
+│ 11.0 │ 0.568429 │  0.00128543 │
+
+│ 12.0 │ 0.566415 │ 0.000728557 │
+
+│ 13.0 │ 0.567557 │ 0.000413347 │
+
+│ 14.0 │ 0.566909 │ 0.000234378 │
+
+│ 15.0 │ 0.567276 │ 0.000132942 │
+
+│ 16.0 │ 0.567068 │   7.5392e-5 │
+
+│ 17.0 │ 0.567186 │  4.27597e-5 │
+
+│ 18.0 │ 0.567119 │  2.42504e-5 │
+
+│ 19.0 │ 0.567157 │  1.37536e-5 │
+
+│ 20.0 │ 0.567135 │<span class="ansi-green-fg ansi-bold">   7.8002e-6 </span>│
+
+│ 21.0 │ 0.567148 │<span class="ansi-green-fg ansi-bold">  4.42385e-6 </span>│
+
+│ 22.0 │ 0.567141 │<span class="ansi-green-fg ansi-bold">  2.50895e-6 </span>│
+
+│ 23.0 │ 0.567145 │<span class="ansi-green-fg ansi-bold">  1.42294e-6 </span>│
+
+│ 24.0 │ 0.567142 │<span class="ansi-green-fg ansi-bold">  8.07008e-7 </span>│
+
+│ 25.0 │ 0.567144 │<span class="ansi-green-fg ansi-bold">   4.5769e-7 </span>│
+
+│ 26.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  2.59576e-7 </span>│
+
+│ 27.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  1.47217e-7 </span>│
+
+│ 28.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  8.34929e-8 </span>│
+
+│ 29.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  4.73524e-8 </span>│
+
+│ 30.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  2.68556e-8 </span>│
+
+│ 31.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">   1.5231e-8 </span>│
+
+│ 32.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  8.63815e-9 </span>│
+
+│ 33.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  4.89907e-9 </span>│
+
+│ 34.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  2.77847e-9 </span>│
+
+│ 35.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  1.57579e-9 </span>│
+
+│ 36.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 8.93701e-10 </span>│
+
+│ 37.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 5.06855e-10 </span>│
+
+│ 38.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 2.87461e-10 </span>│
+
+│ 39.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  1.6303e-10 </span>│
+
+│ 40.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 9.24626e-11 </span>│
+
+│ 41.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 5.24385e-11 </span>│
+
+└──────┴──────────┴─────────────┘
+</pre>
+</div>
+</div>
+</div>
+<div id="0d4611b6" class="cell" data-execution_count="97">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> <span class="fl">100</span>.;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Iteration xₙ₊₁ = g(xₙ) with x₁ = </span><span class="sc">$</span>x1<span class="st">"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">printErrors</span>( <span class="fu">simple_iteration</span>( g, x1 ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Iteration xₙ₊₁ = g(xₙ) with x₁ = 100.0
+
+┌──────┬─────────────┬─────────────┐
+
+│<span class="ansi-bold">    n </span>│<span class="ansi-bold">        x[n] </span>│<span class="ansi-bold">  |x[n] - Ω| </span>│
+
+├──────┼─────────────┼─────────────┤
+
+│  1.0 │       100.0 │<span class="ansi-red-fg ansi-bold">     99.4329 </span>│
+
+│  2.0 │ 3.72008e-44 │<span class="ansi-red-fg ansi-bold">    0.567143 </span>│
+
+│  3.0 │         1.0 │<span class="ansi-red-fg ansi-bold">    0.432857 </span>│
+
+│  4.0 │    0.367879 │<span class="ansi-red-fg ansi-bold">    0.199264 </span>│
+
+│  5.0 │    0.692201 │<span class="ansi-red-fg ansi-bold">    0.125057 </span>│
+
+│  6.0 │    0.500474 │<span class="ansi-red-fg ansi-bold">   0.0666698 </span>│
+
+│  7.0 │    0.606244 │<span class="ansi-red-fg ansi-bold">   0.0391002 </span>│
+
+│  8.0 │    0.545396 │<span class="ansi-red-fg ansi-bold">   0.0217475 </span>│
+
+│  9.0 │    0.579612 │<span class="ansi-red-fg ansi-bold">    0.012469 </span>│
+
+│ 10.0 │    0.560115 │  0.00702783 │
+
+│ 11.0 │    0.571143 │  0.00399982 │
+
+│ 12.0 │    0.564879 │  0.00226394 │
+
+│ 13.0 │    0.568429 │  0.00128543 │
+
+│ 14.0 │    0.566415 │ 0.000728557 │
+
+│ 15.0 │    0.567557 │ 0.000413347 │
+
+│ 16.0 │    0.566909 │ 0.000234378 │
+
+│ 17.0 │    0.567276 │ 0.000132942 │
+
+│ 18.0 │    0.567068 │   7.5392e-5 │
+
+│ 19.0 │    0.567186 │  4.27597e-5 │
+
+│ 20.0 │    0.567119 │  2.42504e-5 │
+
+│ 21.0 │    0.567157 │  1.37536e-5 │
+
+│ 22.0 │    0.567135 │<span class="ansi-green-fg ansi-bold">   7.8002e-6 </span>│
+
+│ 23.0 │    0.567148 │<span class="ansi-green-fg ansi-bold">  4.42385e-6 </span>│
+
+│ 24.0 │    0.567141 │<span class="ansi-green-fg ansi-bold">  2.50895e-6 </span>│
+
+│ 25.0 │    0.567145 │<span class="ansi-green-fg ansi-bold">  1.42294e-6 </span>│
+
+│ 26.0 │    0.567142 │<span class="ansi-green-fg ansi-bold">  8.07008e-7 </span>│
+
+│ 27.0 │    0.567144 │<span class="ansi-green-fg ansi-bold">   4.5769e-7 </span>│
+
+│ 28.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  2.59576e-7 </span>│
+
+│ 29.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  1.47217e-7 </span>│
+
+│ 30.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  8.34929e-8 </span>│
+
+│ 31.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  4.73524e-8 </span>│
+
+│ 32.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  2.68556e-8 </span>│
+
+│ 33.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">   1.5231e-8 </span>│
+
+│ 34.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  8.63815e-9 </span>│
+
+│ 35.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  4.89907e-9 </span>│
+
+│ 36.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  2.77847e-9 </span>│
+
+│ 37.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  1.57579e-9 </span>│
+
+│ 38.0 │    0.567143 │<span class="ansi-green-fg ansi-bold"> 8.93701e-10 </span>│
+
+│ 39.0 │    0.567143 │<span class="ansi-green-fg ansi-bold"> 5.06855e-10 </span>│
+
+│ 40.0 │    0.567143 │<span class="ansi-green-fg ansi-bold"> 2.87461e-10 </span>│
+
+│ 41.0 │    0.567143 │<span class="ansi-green-fg ansi-bold">  1.6303e-10 </span>│
+
+│ 42.0 │    0.567143 │<span class="ansi-green-fg ansi-bold"> 9.24626e-11 </span>│
+
+│ 43.0 │    0.567143 │<span class="ansi-green-fg ansi-bold"> 5.24385e-11 </span>│
+
+└──────┴─────────────┴─────────────┘
+</pre>
+</div>
+</div>
+</div>
+<div id="a392e297" class="cell" data-execution_count="98">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>.;</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Iteration xₙ₊₁ = g(xₙ) with x₁ = </span><span class="sc">$</span>x1<span class="st">"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">printErrors</span>( <span class="fu">simple_iteration</span>( g, x1 ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Iteration xₙ₊₁ = g(xₙ) with x₁ = -1.0
+
+┌──────┬──────────┬─────────────┐
+
+│<span class="ansi-bold">    n </span>│<span class="ansi-bold">     x[n] </span>│<span class="ansi-bold">  |x[n] - Ω| </span>│
+
+├──────┼──────────┼─────────────┤
+
+│  1.0 │     -1.0 │<span class="ansi-red-fg ansi-bold">     1.56714 </span>│
+
+│  2.0 │  2.71828 │<span class="ansi-red-fg ansi-bold">     2.15114 </span>│
+
+│  3.0 │ 0.065988 │<span class="ansi-red-fg ansi-bold">    0.501155 </span>│
+
+│  4.0 │ 0.936142 │<span class="ansi-red-fg ansi-bold">    0.368999 </span>│
+
+│  5.0 │ 0.392138 │<span class="ansi-red-fg ansi-bold">    0.175006 </span>│
+
+│  6.0 │ 0.675611 │<span class="ansi-red-fg ansi-bold">    0.108468 </span>│
+
+│  7.0 │ 0.508845 │<span class="ansi-red-fg ansi-bold">   0.0582979 </span>│
+
+│  8.0 │ 0.601189 │<span class="ansi-red-fg ansi-bold">    0.034046 </span>│
+
+│  9.0 │ 0.548159 │<span class="ansi-red-fg ansi-bold">    0.018984 </span>│
+
+│ 10.0 │ 0.578013 │<span class="ansi-red-fg ansi-bold">   0.0108695 </span>│
+
+│ 11.0 │ 0.561012 │  0.00613117 │
+
+│ 12.0 │ 0.570631 │  0.00348793 │
+
+│ 13.0 │ 0.565169 │  0.00197471 │
+
+│ 14.0 │ 0.568264 │  0.00112105 │
+
+│ 15.0 │ 0.566508 │ 0.000635441 │
+
+│ 16.0 │ 0.567504 │   0.0003605 │
+
+│ 17.0 │ 0.566939 │ 0.000204419 │
+
+│ 18.0 │ 0.567259 │ 0.000115946 │
+
+│ 19.0 │ 0.567078 │  6.57544e-5 │
+
+│ 20.0 │ 0.567181 │  3.72934e-5 │
+
+│ 21.0 │ 0.567122 │  2.11503e-5 │
+
+│ 22.0 │ 0.567155 │  1.19954e-5 │
+
+│ 23.0 │ 0.567136 │<span class="ansi-green-fg ansi-bold">  6.80306e-6 </span>│
+
+│ 24.0 │ 0.567147 │<span class="ansi-green-fg ansi-bold">  3.85832e-6 </span>│
+
+│ 25.0 │ 0.567141 │<span class="ansi-green-fg ansi-bold">  2.18822e-6 </span>│
+
+│ 26.0 │ 0.567145 │<span class="ansi-green-fg ansi-bold">  1.24103e-6 </span>│
+
+│ 27.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  7.03844e-7 </span>│
+
+│ 28.0 │ 0.567144 │<span class="ansi-green-fg ansi-bold">  3.99181e-7 </span>│
+
+│ 29.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  2.26393e-7 </span>│
+
+│ 30.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  1.28397e-7 </span>│
+
+│ 31.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  7.28195e-8 </span>│
+
+│ 32.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  4.12991e-8 </span>│
+
+│ 33.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  2.34225e-8 </span>│
+
+│ 34.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  1.32839e-8 </span>│
+
+│ 35.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  7.53388e-9 </span>│
+
+│ 36.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  4.27279e-9 </span>│
+
+│ 37.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  2.42329e-9 </span>│
+
+│ 38.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  1.37435e-9 </span>│
+
+│ 39.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 7.79454e-10 </span>│
+
+│ 40.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 4.42061e-10 </span>│
+
+│ 41.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 2.50713e-10 </span>│
+
+│ 42.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 1.42189e-10 </span>│
+
+│ 43.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold"> 8.06427e-11 </span>│
+
+│ 44.0 │ 0.567143 │<span class="ansi-green-fg ansi-bold">  4.5735e-11 </span>│
+
+└──────┴──────────┴─────────────┘
+</pre>
+</div>
+</div>
+</div>
+<div id="c7ba2d9c" class="cell" data-execution_count="99">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> <span class="fl">2</span>.;</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Iteration xₙ₊₁ = h(xₙ) with x₁ = </span><span class="sc">$</span>x1<span class="st">"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">printErrors</span>( <span class="fu">simple_iteration</span>( h, x1 ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Iteration xₙ₊₁ = h(xₙ) with x₁ = 2.0
+
+┌───────┬──────────────┬────────────┐
+
+│<span class="ansi-bold">     n </span>│<span class="ansi-bold">         x[n] </span>│<span class="ansi-bold"> |x[n] - Ω| </span>│
+
+├───────┼──────────────┼────────────┤
+
+│   1.0 │          2.0 │<span class="ansi-red-fg ansi-bold">    1.43286 </span>│
+
+│   2.0 │    -0.693147 │<span class="ansi-red-fg ansi-bold">    1.26029 </span>│
+
+│   3.0 │     0.366513 │<span class="ansi-red-fg ansi-bold">    0.20063 </span>│
+
+│   4.0 │      1.00372 │<span class="ansi-red-fg ansi-bold">   0.436578 </span>│
+
+│   5.0 │   -0.0037146 │<span class="ansi-red-fg ansi-bold">   0.570858 </span>│
+
+│   6.0 │      5.59549 │<span class="ansi-red-fg ansi-bold">    5.02834 </span>│
+
+│   7.0 │     -1.72196 │<span class="ansi-red-fg ansi-bold">     2.2891 </span>│
+
+│   8.0 │    -0.543463 │<span class="ansi-red-fg ansi-bold">    1.11061 </span>│
+
+│   9.0 │     0.609793 │<span class="ansi-red-fg ansi-bold">    0.04265 </span>│
+
+│  10.0 │     0.494635 │<span class="ansi-red-fg ansi-bold">   0.072508 </span>│
+
+│  11.0 │     0.703935 │<span class="ansi-red-fg ansi-bold">   0.136791 </span>│
+
+│  12.0 │      0.35107 │<span class="ansi-red-fg ansi-bold">   0.216073 </span>│
+
+│  13.0 │      1.04677 │<span class="ansi-red-fg ansi-bold">   0.479627 </span>│
+
+│  14.0 │   -0.0457093 │<span class="ansi-red-fg ansi-bold">   0.612853 </span>│
+
+│  15.0 │      3.08545 │<span class="ansi-red-fg ansi-bold">    2.51831 </span>│
+
+│  16.0 │      -1.1267 │<span class="ansi-red-fg ansi-bold">    1.69384 </span>│
+
+│  17.0 │    -0.119292 │<span class="ansi-red-fg ansi-bold">   0.686435 </span>│
+
+│  18.0 │      2.12618 │<span class="ansi-red-fg ansi-bold">    1.55904 </span>│
+
+│  19.0 │    -0.754329 │<span class="ansi-red-fg ansi-bold">    1.32147 </span>│
+
+│  20.0 │     0.281927 │<span class="ansi-red-fg ansi-bold">   0.285216 </span>│
+
+│  21.0 │      1.26611 │<span class="ansi-red-fg ansi-bold">   0.698963 </span>│
+
+│  22.0 │    -0.235946 │<span class="ansi-red-fg ansi-bold">   0.803089 </span>│
+
+│  23.0 │      1.44415 │<span class="ansi-red-fg ansi-bold">   0.877009 </span>│
+
+│  24.0 │    -0.367522 │<span class="ansi-red-fg ansi-bold">   0.934666 </span>│
+
+│  25.0 │      1.00097 │<span class="ansi-red-fg ansi-bold">   0.433828 </span>│
+
+│  26.0 │ -0.000970968 │<span class="ansi-red-fg ansi-bold">   0.568114 </span>│
+
+│  27.0 │      6.93722 │<span class="ansi-red-fg ansi-bold">    6.37007 </span>│
+
+│  28.0 │      -1.9369 │<span class="ansi-red-fg ansi-bold">    2.50404 </span>│
+
+│  29.0 │    -0.661089 │<span class="ansi-red-fg ansi-bold">    1.22823 </span>│
+
+│  30.0 │     0.413867 │<span class="ansi-red-fg ansi-bold">   0.153277 </span>│
+
+│  31.0 │     0.882212 │<span class="ansi-red-fg ansi-bold">   0.315068 </span>│
+
+│  32.0 │     0.125323 │<span class="ansi-red-fg ansi-bold">    0.44182 </span>│
+
+│  33.0 │      2.07686 │<span class="ansi-red-fg ansi-bold">    1.50972 </span>│
+
+│  34.0 │    -0.730856 │<span class="ansi-red-fg ansi-bold">      1.298 </span>│
+
+│  35.0 │     0.313538 │<span class="ansi-red-fg ansi-bold">   0.253605 </span>│
+
+│  36.0 │      1.15983 │<span class="ansi-red-fg ansi-bold">    0.59269 </span>│
+
+│  37.0 │    -0.148277 │<span class="ansi-red-fg ansi-bold">    0.71542 </span>│
+
+│  38.0 │      1.90868 │<span class="ansi-red-fg ansi-bold">    1.34153 </span>│
+
+│  39.0 │    -0.646409 │<span class="ansi-red-fg ansi-bold">    1.21355 </span>│
+
+│  40.0 │     0.436322 │<span class="ansi-red-fg ansi-bold">   0.130821 </span>│
+
+│  41.0 │     0.829374 │<span class="ansi-red-fg ansi-bold">   0.262231 </span>│
+
+│  42.0 │     0.187084 │<span class="ansi-red-fg ansi-bold">   0.380059 </span>│
+
+│  43.0 │       1.6762 │<span class="ansi-red-fg ansi-bold">    1.10905 </span>│
+
+│  44.0 │    -0.516528 │<span class="ansi-red-fg ansi-bold">    1.08367 </span>│
+
+│  45.0 │     0.660626 │<span class="ansi-red-fg ansi-bold">  0.0934825 </span>│
+
+│  46.0 │     0.414568 │<span class="ansi-red-fg ansi-bold">   0.152576 </span>│
+
+│  47.0 │     0.880519 │<span class="ansi-red-fg ansi-bold">   0.313376 </span>│
+
+│  48.0 │     0.127244 │<span class="ansi-red-fg ansi-bold">     0.4399 </span>│
+
+│  49.0 │      2.06165 │<span class="ansi-red-fg ansi-bold">    1.49451 </span>│
+
+│  50.0 │    -0.723507 │<span class="ansi-red-fg ansi-bold">    1.29065 </span>│
+
+│  51.0 │     0.323645 │<span class="ansi-red-fg ansi-bold">   0.243499 </span>│
+
+│  52.0 │      1.12811 │<span class="ansi-red-fg ansi-bold">   0.560966 </span>│
+
+│  53.0 │    -0.120543 │<span class="ansi-red-fg ansi-bold">   0.687686 </span>│
+
+│  54.0 │      2.11575 │<span class="ansi-red-fg ansi-bold">    1.54861 </span>│
+
+│  55.0 │    -0.749409 │<span class="ansi-red-fg ansi-bold">    1.31655 </span>│
+
+│  56.0 │      0.28847 │<span class="ansi-red-fg ansi-bold">   0.278673 </span>│
+
+│  57.0 │      1.24316 │<span class="ansi-red-fg ansi-bold">    0.67602 </span>│
+
+│  58.0 │    -0.217659 │<span class="ansi-red-fg ansi-bold">   0.784802 </span>│
+
+│  59.0 │      1.52483 │<span class="ansi-red-fg ansi-bold">   0.957682 </span>│
+
+│  60.0 │     -0.42188 │<span class="ansi-red-fg ansi-bold">   0.989023 </span>│
+
+│  61.0 │     0.863034 │<span class="ansi-red-fg ansi-bold">   0.295891 </span>│
+
+│  62.0 │     0.147301 │<span class="ansi-red-fg ansi-bold">   0.419842 </span>│
+
+│  63.0 │      1.91528 │<span class="ansi-red-fg ansi-bold">    1.34813 </span>│
+
+│  64.0 │    -0.649862 │<span class="ansi-red-fg ansi-bold">    1.21701 </span>│
+
+│  65.0 │     0.430995 │<span class="ansi-red-fg ansi-bold">   0.136148 </span>│
+
+│  66.0 │     0.841659 │<span class="ansi-red-fg ansi-bold">   0.274516 </span>│
+
+│  67.0 │      0.17238 │<span class="ansi-red-fg ansi-bold">   0.394763 </span>│
+
+│  68.0 │      1.75805 │<span class="ansi-red-fg ansi-bold">    1.19091 </span>│
+
+│  69.0 │    -0.564207 │<span class="ansi-red-fg ansi-bold">    1.13135 </span>│
+
+│  70.0 │     0.572333 │ 0.00519021 │
+
+│  71.0 │     0.558033 │ 0.00910987 │
+
+│  72.0 │     0.583336 │<span class="ansi-red-fg ansi-bold">  0.0161931 </span>│
+
+│  73.0 │     0.538991 │<span class="ansi-red-fg ansi-bold">  0.0281521 </span>│
+
+│  74.0 │     0.618056 │<span class="ansi-red-fg ansi-bold">  0.0509127 </span>│
+
+│  75.0 │     0.481176 │<span class="ansi-red-fg ansi-bold">  0.0859671 </span>│
+
+│  76.0 │     0.731522 │<span class="ansi-red-fg ansi-bold">   0.164379 </span>│
+
+│  77.0 │     0.312628 │<span class="ansi-red-fg ansi-bold">   0.254515 </span>│
+
+│  78.0 │      1.16274 │<span class="ansi-red-fg ansi-bold">   0.595597 </span>│
+
+│  79.0 │     -0.15078 │<span class="ansi-red-fg ansi-bold">   0.717923 </span>│
+
+│  80.0 │      1.89193 │<span class="ansi-red-fg ansi-bold">    1.32479 </span>│
+
+│  81.0 │      -0.6376 │<span class="ansi-red-fg ansi-bold">    1.20474 </span>│
+
+│  82.0 │     0.450045 │<span class="ansi-red-fg ansi-bold">   0.117099 </span>│
+
+│  83.0 │     0.798408 │<span class="ansi-red-fg ansi-bold">   0.231265 </span>│
+
+│  84.0 │     0.225135 │<span class="ansi-red-fg ansi-bold">   0.342008 </span>│
+
+│  85.0 │      1.49105 │<span class="ansi-red-fg ansi-bold">   0.923911 </span>│
+
+│  86.0 │    -0.399483 │<span class="ansi-red-fg ansi-bold">   0.966627 </span>│
+
+│  87.0 │     0.917583 │<span class="ansi-red-fg ansi-bold">    0.35044 </span>│
+
+│  88.0 │    0.0860119 │<span class="ansi-red-fg ansi-bold">   0.481131 </span>│
+
+│  89.0 │      2.45327 │<span class="ansi-red-fg ansi-bold">    1.88613 </span>│
+
+│  90.0 │    -0.897422 │<span class="ansi-red-fg ansi-bold">    1.46457 </span>│
+
+│  91.0 │     0.108229 │<span class="ansi-red-fg ansi-bold">   0.458914 </span>│
+
+│  92.0 │       2.2235 │<span class="ansi-red-fg ansi-bold">    1.65636 </span>│
+
+│  93.0 │    -0.799084 │<span class="ansi-red-fg ansi-bold">    1.36623 </span>│
+
+│  94.0 │     0.224289 │<span class="ansi-red-fg ansi-bold">   0.342854 </span>│
+
+│  95.0 │      1.49482 │<span class="ansi-red-fg ansi-bold">   0.927676 </span>│
+
+│  96.0 │    -0.402006 │<span class="ansi-red-fg ansi-bold">   0.969149 </span>│
+
+│  97.0 │     0.911289 │<span class="ansi-red-fg ansi-bold">   0.344146 </span>│
+
+│  98.0 │    0.0928949 │<span class="ansi-red-fg ansi-bold">   0.474248 </span>│
+
+│  99.0 │      2.37629 │<span class="ansi-red-fg ansi-bold">    1.80914 </span>│
+
+│ 100.0 │    -0.865539 │<span class="ansi-red-fg ansi-bold">    1.43268 </span>│
+
+└───────┴──────────────┴────────────┘
+</pre>
+</div>
+</div>
+</div>
+<div id="fa3e6fac" class="cell" data-execution_count="100">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> Ω <span class="op">+</span> <span class="fl">1e-10</span>;</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Iteration xₙ₊₁ = h(xₙ) with x₁ = </span><span class="sc">$</span>x1<span class="st">"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">printErrors</span>( <span class="fu">simple_iteration</span>( h, x1 ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Iteration xₙ₊₁ = h(xₙ) with x₁ = 0.5671432905097845
+
+┌───────┬────────────┬─────────────┐
+
+│<span class="ansi-bold">     n </span>│<span class="ansi-bold">       x[n] </span>│<span class="ansi-bold">  |x[n] - Ω| </span>│
+
+├───────┼────────────┼─────────────┤
+
+│   1.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">     1.0e-10 </span>│
+
+│   2.0 │   0.567143 │<span class="ansi-green-fg ansi-bold"> 1.76324e-10 </span>│
+
+│   3.0 │   0.567143 │<span class="ansi-green-fg ansi-bold"> 3.10897e-10 </span>│
+
+│   4.0 │   0.567143 │<span class="ansi-green-fg ansi-bold"> 5.48182e-10 </span>│
+
+│   5.0 │   0.567143 │<span class="ansi-green-fg ansi-bold"> 9.66566e-10 </span>│
+
+│   6.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  1.70427e-9 </span>│
+
+│   7.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  3.00501e-9 </span>│
+
+│   8.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">   5.2985e-9 </span>│
+
+│   9.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  9.34244e-9 </span>│
+
+│  10.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  1.64728e-8 </span>│
+
+│  11.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  2.90452e-8 </span>│
+
+│  12.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  5.12132e-8 </span>│
+
+│  13.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  9.03003e-8 </span>│
+
+│  14.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">   1.5922e-7 </span>│
+
+│  15.0 │   0.567144 │<span class="ansi-green-fg ansi-bold">   2.8074e-7 </span>│
+
+│  16.0 │   0.567143 │<span class="ansi-green-fg ansi-bold">  4.95006e-7 </span>│
+
+│  17.0 │   0.567144 │<span class="ansi-green-fg ansi-bold">  8.72807e-7 </span>│
+
+│  18.0 │   0.567142 │<span class="ansi-green-fg ansi-bold">  1.53895e-6 </span>│
+
+│  19.0 │   0.567146 │<span class="ansi-green-fg ansi-bold">  2.71352e-6 </span>│
+
+│  20.0 │   0.567139 │<span class="ansi-green-fg ansi-bold">  4.78453e-6 </span>│
+
+│  21.0 │   0.567152 │<span class="ansi-green-fg ansi-bold">  8.43622e-6 </span>│
+
+│  22.0 │   0.567128 │  1.48748e-5 │
+
+│  23.0 │    0.56717 │   2.6228e-5 │
+
+│  24.0 │   0.567097 │  4.62447e-5 │
+
+│  25.0 │   0.567225 │  8.15431e-5 │
+
+│  26.0 │      0.567 │ 0.000143768 │
+
+│  27.0 │   0.567397 │ 0.000253528 │
+
+│  28.0 │   0.566696 │ 0.000446926 │
+
+│  29.0 │   0.567932 │  0.00078834 │
+
+│  30.0 │   0.565754 │  0.00138905 │
+
+│  31.0 │   0.569596 │  0.00245222 │
+
+│  32.0 │   0.562829 │  0.00431448 │
+
+│  33.0 │    0.57478 │  0.00763648 │
+
+│  34.0 │   0.553768 │<span class="ansi-red-fg ansi-bold">    0.013375 </span>│
+
+│  35.0 │   0.591009 │<span class="ansi-red-fg ansi-bold">   0.0238656 </span>│
+
+│  36.0 │   0.525924 │<span class="ansi-red-fg ansi-bold">   0.0412191 </span>│
+
+│  37.0 │   0.642598 │<span class="ansi-red-fg ansi-bold">   0.0754548 </span>│
+
+│  38.0 │   0.442236 │<span class="ansi-red-fg ansi-bold">    0.124908 </span>│
+
+│  39.0 │   0.815912 │<span class="ansi-red-fg ansi-bold">    0.248769 </span>│
+
+│  40.0 │   0.203449 │<span class="ansi-red-fg ansi-bold">    0.363695 </span>│
+
+│  41.0 │    1.59234 │<span class="ansi-red-fg ansi-bold">      1.0252 </span>│
+
+│  42.0 │  -0.465206 │<span class="ansi-red-fg ansi-bold">     1.03235 </span>│
+
+│  43.0 │   0.765276 │<span class="ansi-red-fg ansi-bold">    0.198132 </span>│
+
+│  44.0 │   0.267519 │<span class="ansi-red-fg ansi-bold">    0.299624 </span>│
+
+│  45.0 │    1.31856 │<span class="ansi-red-fg ansi-bold">    0.751421 </span>│
+
+│  46.0 │  -0.276543 │<span class="ansi-red-fg ansi-bold">    0.843687 </span>│
+
+│  47.0 │    1.28539 │<span class="ansi-red-fg ansi-bold">    0.718245 </span>│
+
+│  48.0 │  -0.251061 │<span class="ansi-red-fg ansi-bold">    0.818204 </span>│
+
+│  49.0 │    1.38206 │<span class="ansi-red-fg ansi-bold">    0.814918 </span>│
+
+│  50.0 │  -0.323576 │<span class="ansi-red-fg ansi-bold">    0.890719 </span>│
+
+│  51.0 │    1.12832 │<span class="ansi-red-fg ansi-bold">    0.561178 </span>│
+
+│  52.0 │  -0.120731 │<span class="ansi-red-fg ansi-bold">    0.687875 </span>│
+
+│  53.0 │    2.11419 │<span class="ansi-red-fg ansi-bold">     1.54705 </span>│
+
+│  54.0 │  -0.748671 │<span class="ansi-red-fg ansi-bold">     1.31581 </span>│
+
+│  55.0 │   0.289456 │<span class="ansi-red-fg ansi-bold">    0.277688 </span>│
+
+│  56.0 │    1.23975 │<span class="ansi-red-fg ansi-bold">     0.67261 </span>│
+
+│  57.0 │  -0.214912 │<span class="ansi-red-fg ansi-bold">    0.782056 </span>│
+
+│  58.0 │    1.53753 │<span class="ansi-red-fg ansi-bold">    0.970382 </span>│
+
+│  59.0 │  -0.430174 │<span class="ansi-red-fg ansi-bold">    0.997318 </span>│
+
+│  60.0 │   0.843565 │<span class="ansi-red-fg ansi-bold">    0.276422 </span>│
+
+│  61.0 │   0.170118 │<span class="ansi-red-fg ansi-bold">    0.397025 </span>│
+
+│  62.0 │    1.77126 │<span class="ansi-red-fg ansi-bold">     1.20412 </span>│
+
+│  63.0 │  -0.571691 │<span class="ansi-red-fg ansi-bold">     1.13883 </span>│
+
+│  64.0 │   0.559156 │  0.00798729 │
+
+│  65.0 │   0.581327 │<span class="ansi-red-fg ansi-bold">   0.0141835 </span>│
+
+│  66.0 │   0.542442 │<span class="ansi-red-fg ansi-bold">   0.0247011 </span>│
+
+│  67.0 │   0.611674 │<span class="ansi-red-fg ansi-bold">   0.0445304 </span>│
+
+│  68.0 │   0.491556 │<span class="ansi-red-fg ansi-bold">   0.0755869 </span>│
+
+│  69.0 │   0.710179 │<span class="ansi-red-fg ansi-bold">    0.143035 </span>│
+
+│  70.0 │   0.342239 │<span class="ansi-red-fg ansi-bold">    0.224905 </span>│
+
+│  71.0 │    1.07225 │<span class="ansi-red-fg ansi-bold">    0.505104 </span>│
+
+│  72.0 │ -0.0697564 │<span class="ansi-red-fg ansi-bold">      0.6369 </span>│
+
+│  73.0 │    2.66275 │<span class="ansi-red-fg ansi-bold">      2.0956 </span>│
+
+│  74.0 │  -0.979358 │<span class="ansi-red-fg ansi-bold">      1.5465 </span>│
+
+│  75.0 │  0.0208581 │<span class="ansi-red-fg ansi-bold">    0.546285 </span>│
+
+│  76.0 │    3.87001 │<span class="ansi-red-fg ansi-bold">     3.30287 </span>│
+
+│  77.0 │   -1.35326 │<span class="ansi-red-fg ansi-bold">      1.9204 </span>│
+
+│  78.0 │  -0.302515 │<span class="ansi-red-fg ansi-bold">    0.869658 </span>│
+
+│  79.0 │    1.19563 │<span class="ansi-red-fg ansi-bold">    0.628482 </span>│
+
+│  80.0 │  -0.178669 │<span class="ansi-red-fg ansi-bold">    0.745812 </span>│
+
+│  81.0 │    1.72222 │<span class="ansi-red-fg ansi-bold">     1.15508 </span>│
+
+│  82.0 │  -0.543614 │<span class="ansi-red-fg ansi-bold">     1.11076 </span>│
+
+│  83.0 │   0.609516 │<span class="ansi-red-fg ansi-bold">   0.0423726 </span>│
+
+│  84.0 │    0.49509 │<span class="ansi-red-fg ansi-bold">    0.072053 </span>│
+
+│  85.0 │   0.703015 │<span class="ansi-red-fg ansi-bold">    0.135872 </span>│
+
+│  86.0 │   0.352377 │<span class="ansi-red-fg ansi-bold">    0.214767 </span>│
+
+│  87.0 │    1.04305 │<span class="ansi-red-fg ansi-bold">    0.475911 </span>│
+
+│  88.0 │ -0.0421532 │<span class="ansi-red-fg ansi-bold">    0.609296 </span>│
+
+│  89.0 │    3.16644 │<span class="ansi-red-fg ansi-bold">      2.5993 </span>│
+
+│  90.0 │   -1.15261 │<span class="ansi-red-fg ansi-bold">     1.71975 </span>│
+
+│  91.0 │  -0.142028 │<span class="ansi-red-fg ansi-bold">    0.709172 </span>│
+
+│  92.0 │    1.95173 │<span class="ansi-red-fg ansi-bold">     1.38459 </span>│
+
+│  93.0 │  -0.668715 │<span class="ansi-red-fg ansi-bold">     1.23586 </span>│
+
+│  94.0 │   0.402397 │<span class="ansi-red-fg ansi-bold">    0.164746 </span>│
+
+│  95.0 │   0.910317 │<span class="ansi-red-fg ansi-bold">    0.343173 </span>│
+
+│  96.0 │  0.0939629 │<span class="ansi-red-fg ansi-bold">     0.47318 </span>│
+
+│  97.0 │    2.36486 │<span class="ansi-red-fg ansi-bold">     1.79771 </span>│
+
+│  98.0 │  -0.860717 │<span class="ansi-red-fg ansi-bold">     1.42786 </span>│
+
+│  99.0 │   0.149989 │<span class="ansi-red-fg ansi-bold">    0.417154 </span>│
+
+│ 100.0 │    1.89719 │<span class="ansi-red-fg ansi-bold">     1.33005 </span>│
+
+└───────┴────────────┴─────────────┘
+</pre>
+</div>
+</div>
+</div>
+<div class="alert alert-block alert-success">
+<p>We have therefore seen that <span class="math inline">x_{n+1} = g(x_n)</span> converges to <span class="math inline">\Omega</span> for all <span class="math inline">x_1 \in \{ -1, 1, 100 \}</span> and <span class="math inline">y_{n+1} = g(y_n)</span> diverges for <span class="math inline">y_1 \in \{ 1, \Omega + 10^{-10}  \}</span>.</p>
+</div>
+<p>We will show that <span class="math inline">\Omega</span> is a stable fixed point of <span class="math inline">g</span> but an unstable fixed point of <span class="math inline">h</span>.</p>
+<ol start="3" type="1">
+<li>✍ Show that <span class="math inline">g:[\frac{1}{e}, 1]\to[\frac{1}{e},1]</span> with <span class="math inline">|g'| &lt; 1</span>,</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>The function <span class="math inline">g(x) = e^{-x}</span> is decreasing with <span class="math inline">g(1) = \frac1e</span> and <span class="math inline">g(\tfrac1e) = e^{-\tfrac1e}</span>. Therefore, <span class="math inline">g( [\frac{1}{e}, 1] ) \subset [ \frac1e, e^{-\tfrac1e} ] \subset [\frac1e, 1]</span>.</p>
+<p>Moreover, we have <span class="math inline">|g'(x)| = |-e^{-x}| \leq e^{-\tfrac1e} &lt; 1</span> for all <span class="math inline">x \in [\frac1e, 1]</span>.</p>
+<p>This can also be seen in the following plot:</p>
+</div>
+<div id="d9c4b397" class="cell" data-execution_count="101">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>( <span class="st">"[g(1), g(1/e)] = [1/e, "</span>, <span class="fu">g</span>(<span class="fl">1</span><span class="op">/</span><span class="fu">exp</span>(<span class="fl">1</span>)), <span class="st">"] ⊂ [1/e, 1]"</span> )</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( g, <span class="fl">1</span><span class="op">/</span><span class="fu">exp</span>(<span class="fl">1</span>), <span class="fl">1</span>, label<span class="op">=</span>L<span class="st">"y = g(x)"</span> )</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hline!</span>( [<span class="fl">1</span><span class="op">/</span><span class="fu">exp</span>(<span class="fl">1</span>), <span class="fl">1</span>] , linestyle<span class="op">=</span>[<span class="op">:</span>dash <span class="op">:</span>dash], primary<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter!</span>( [<span class="fl">1</span><span class="op">/</span><span class="fu">exp</span>(<span class="fl">1</span>), <span class="fl">1</span>], [<span class="fu">g</span>(<span class="fl">1</span><span class="op">/</span><span class="fu">exp</span>(<span class="fl">1</span>)), <span class="fu">g</span>(<span class="fl">1</span>)], markersize<span class="op">=</span><span class="fl">5</span>, primary<span class="op">=</span><span class="cn">false</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[g(1), g(1/e)] = [1/e, 0.6922006275553464] ⊂ [1/e, 1]</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="101">
+<div>
+<figure class="figure">
+<p><img src="A3 Solutions_files/figure-html/cell-8-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="1">
+<li>✍ Explain why this means that the iteration <span class="math inline">x_{n+1} = g(x_n)</span> converges for all <span class="math inline">x_1 \in [\frac{1}{e}, 1]</span>,</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>Since <span class="math inline">|g'(x)| \leq e^{-\frac1e} &lt; 1</span> for all <span class="math inline">x \in [\frac{1}{e}, 1]</span> (which we showed in part 3.), <span class="math inline">g</span> is a contraction on <span class="math inline">[\frac{1}{e}, 1]</span>. By the contraction mapping theorem, there exists unique fixed point <span class="math inline">\xi = g(\xi) \in [\frac{1}{e}, 1]</span> and the iteration <span class="math inline">x_{n+1} = g(x_n)</span> converges at least linearly for all <span class="math inline">x_1 \in [\frac{1}{e}, 1]</span>.</p>
+</div>
+<ol start="5" type="1">
+<li>✍ Now fix <span class="math inline">x_1 \in \mathbb R</span>. Show that the sequence <span class="math inline">(x_n)</span> is eventually contained in <span class="math inline">[0,1]</span> and that <span class="math inline">g : [0,1] \to [\frac{1}{e}, 1]</span>. Explain why this means that <span class="math inline">(x_n)</span> converges for all <span class="math inline">x_1 \in \mathbb R</span>,</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>For any <span class="math inline">x_1 \in \mathbb R</span>, we have <span class="math inline">x_2 = g(x_1) = e^{-x_1} \geq 0</span>. Then, either <span class="math inline">x_2 \in [0,1]</span> or <span class="math inline">x_2 &gt; 1</span>. In the later case, <span class="math inline">x_3 = g(x_2) = e^{-x_2} \in [0, \frac1e] \subset [0,1]</span>. That is, either <span class="math inline">x_2 \in [0,1]</span> or <span class="math inline">x_3 \in [0,1]</span>. Since <span class="math inline">g</span> is decreasing, we have <span class="math inline">g([0,1])\in [\frac1e, 1 ]</span> and so either <span class="math inline">x_3 \in  [\frac1e, 1 ]</span> or <span class="math inline">x_4 \in  [\frac1e, 1 ]</span>. By the previous part, the iteration <span class="math inline">x_{n+1} = g(x_n)</span> started in <span class="math inline">[\frac1e,1]</span> converges.</p>
+</div>
+<ol start="6" type="1">
+<li>✍ What is the order of convergence of this method?</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>We showed in lectures that</p>
+<p><span class="math display">\begin{align}
+    \lim_{n\to\infty}\frac
+        {|x_{n+1} - \Omega |}
+        {|x_n - \Omega|}
+    = \left| g'(\Omega) \right|.
+\end{align}</span></p>
+<p>In this particular case <span class="math inline">|g'(\Omega)| = e^{-\Omega} = g(\Omega) = \Omega &gt; 0</span>. As a result, the convergence is linear.</p>
+</div>
+<ol start="7" type="1">
+<li>💻 Confirm this numerically.</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>By computing</p>
+<p><span class="math display">\begin{align}
+    \frac
+        {|x_{n+1}-\Omega|}
+        {|x_n - \Omega|}
+\end{align}</span></p>
+<p>we see that this approaches a value in <span class="math inline">(0,1)</span> as <span class="math inline">n\to\infty</span>:</p>
+</div>
+<div id="b926df35" class="cell" data-execution_count="102">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>( <span class="st">"theoretical value of μ = "</span>, Ω)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="fu">simple_iteration</span>( g, <span class="fl">1</span>. ) </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">orderOfConvergence</span>( x, Ω, α<span class="op">=</span><span class="fl">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>theoretical value of μ = 0.5671432904097845
+
+┌───────────┬──────────┬─────────────┬─────────┬─────────────┐
+
+│<span class="ansi-bold"> iteration </span>│<span class="ansi-bold"> sequence </span>│<span class="ansi-bold">  abs. error </span>│<span class="ansi-bold">   ratio </span>│<span class="ansi-bold"> μ (α = 1.0) </span>│
+
+├───────────┼──────────┼─────────────┼─────────┼─────────────┤
+
+│       1.0 │      1.0 │    0.432857 │     NaN │         NaN │
+
+│       2.0 │ 0.367879 │    0.199264 │ 1.92647 │    0.460346 │
+
+│       3.0 │ 0.692201 │    0.125057 │ 1.28879 │    0.627597 │
+
+│       4.0 │ 0.500474 │   0.0666698 │ 1.30256 │    0.533114 │
+
+│       5.0 │ 0.606244 │   0.0391002 │ 1.19705 │    0.586476 │
+
+│       6.0 │ 0.545396 │   0.0217475 │ 1.18097 │    0.556199 │
+
+│       7.0 │ 0.579612 │    0.012469 │  1.1453 │    0.573355 │
+
+│       8.0 │ 0.560115 │  0.00702783 │ 1.13077 │    0.563622 │
+
+│       9.0 │ 0.571143 │  0.00399982 │ 1.11368 │    0.569141 │
+
+│      10.0 │ 0.564879 │  0.00226394 │ 1.10308 │    0.566011 │
+
+│      11.0 │ 0.568429 │  0.00128543 │ 1.09293 │    0.567786 │
+
+│      12.0 │ 0.566415 │ 0.000728557 │  1.0853 │    0.566779 │
+
+│      13.0 │ 0.567557 │ 0.000413347 │ 1.07845 │     0.56735 │
+
+│      14.0 │ 0.566909 │ 0.000234378 │ 1.07282 │    0.567026 │
+
+│      15.0 │ 0.567276 │ 0.000132942 │ 1.06784 │     0.56721 │
+
+│      16.0 │ 0.567068 │   7.5392e-5 │ 1.06355 │    0.567106 │
+
+│      17.0 │ 0.567186 │  4.27597e-5 │ 1.05974 │    0.567165 │
+
+│      18.0 │ 0.567119 │  2.42504e-5 │ 1.05638 │    0.567131 │
+
+│      19.0 │ 0.567157 │  1.37536e-5 │ 1.05337 │     0.56715 │
+
+│      20.0 │ 0.567135 │   7.8002e-6 │ 1.05066 │    0.567139 │
+
+│      21.0 │ 0.567148 │  4.42385e-6 │ 1.04822 │    0.567146 │
+
+│      22.0 │ 0.567141 │  2.50895e-6 │   1.046 │    0.567142 │
+
+│      23.0 │ 0.567145 │  1.42294e-6 │ 1.04398 │    0.567144 │
+
+│      24.0 │ 0.567142 │  8.07008e-7 │ 1.04213 │    0.567143 │
+
+│      25.0 │ 0.567144 │   4.5769e-7 │ 1.04042 │    0.567144 │
+
+│      26.0 │ 0.567143 │  2.59576e-7 │ 1.03885 │    0.567143 │
+
+│      27.0 │ 0.567143 │  1.47217e-7 │  1.0374 │    0.567143 │
+
+│      28.0 │ 0.567143 │  8.34929e-8 │ 1.03605 │    0.567143 │
+
+│      29.0 │ 0.567143 │  4.73524e-8 │  1.0348 │    0.567143 │
+
+│      30.0 │ 0.567143 │  2.68556e-8 │ 1.03363 │    0.567143 │
+
+│      31.0 │ 0.567143 │   1.5231e-8 │ 1.03253 │    0.567143 │
+
+│      32.0 │ 0.567143 │  8.63815e-9 │ 1.03151 │    0.567143 │
+
+│      33.0 │ 0.567143 │  4.89907e-9 │ 1.03055 │    0.567143 │
+
+│      34.0 │ 0.567143 │  2.77847e-9 │ 1.02964 │    0.567144 │
+
+│      35.0 │ 0.567143 │  1.57579e-9 │ 1.02879 │    0.567143 │
+
+│      36.0 │ 0.567143 │ 8.93701e-10 │ 1.02798 │    0.567144 │
+
+│      37.0 │ 0.567143 │ 5.06855e-10 │ 1.02722 │    0.567142 │
+
+│      38.0 │ 0.567143 │ 2.87461e-10 │  1.0265 │    0.567145 │
+
+│      39.0 │ 0.567143 │  1.6303e-10 │ 1.02581 │     0.56714 │
+
+│      40.0 │ 0.567143 │ 9.24626e-11 │ 1.02516 │     0.56715 │
+
+│      41.0 │ 0.567143 │ 5.24385e-11 │ 1.02455 │    0.567132 │
+
+└───────────┴──────────┴─────────────┴─────────┴─────────────┘
+</pre>
+</div>
+</div>
+</div>
+<ol start="8" type="1">
+<li>✍ Show that <span class="math inline">(y_n)</span> doesn’t converge to <span class="math inline">\Omega</span> for any choice of <span class="math inline">y_1 \not= \Omega</span></li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>We know that <span class="math inline">\Omega = h(\Omega)</span>. The derivative is <span class="math inline">h'(x) = \frac1{1/x} \left(-\frac{1}{x^2}\right) = - \frac{1}{x}</span>. Therefore, we have <span class="math inline">\left|h'(\Omega)\right| = \frac{1}{\Omega} \approx 1.76</span> (see code below) and in a small interval around <span class="math inline">\Omega</span>, we have <span class="math inline">|h'| &gt; 1</span>. By a result from lectures, this means that the sequence <span class="math inline">y_{n+1} = h(y_n)</span> does not converge to <span class="math inline">\Omega</span>.</p>
+<p>(Recall the proof of this statement: if <span class="math inline">y_n \in I\setminus\{\xi\}</span> for some small interval <span class="math inline">I</span> around <span class="math inline">\xi</span> for which <span class="math inline">|h'|&gt;1</span> on <span class="math inline">I</span>, then <span class="math inline">|y_{n+1} - \xi| = |h(y_n) - \xi| = |h'(\eta)| |x_{n}-\xi| &gt; |x_{n}-\xi|</span> and so the sequence is eventually leaves <span class="math inline">I</span>)</p>
+</div>
+<div id="41fbb222" class="cell" data-execution_count="103">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">-</span><span class="fl">1</span><span class="op">/</span>Ω</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="103">
+<pre><code>-1.7632228343518948</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-bisection-method" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="b.-bisection-method"><span class="header-section-number">14.2</span> B. Bisection Method</h2>
+<p>Suppose that <span class="math inline">f \colon [a,b] \to \mathbb R</span> is continuous with <span class="math inline">f(a) f(b) \leq 0</span>. By the change of sign theorem, there exists <span class="math inline">\xi \in [a,b]</span> for which <span class="math inline">f(\xi) = 0</span>. The bisection method can be described by the following pseudocode:</p>
+<div style="font-family:monospace;">
+<pre>    INPUT:  f    : function
+            a, b : interval on which f is defined     
+            tol  : tolerance
+            N    : maximum number of iterations
+    OUTPUT: x    : such that |f(x)| &lt; tol
+    for n in 1:N
+        c = midpoint of a and b
+        if ( |f(c)| &lt; tol ) 
+            OUTPUT: approximate root c
+        else if ( f changes sign on [a,c] )                                    
+            b = c; 
+        else 
+            a = c;      
+    end
+    OUTPUT: "root not found"
+</pre>
+</div>
+<ol type="1">
+<li>💻 Implement this method in the following cell</li>
+</ol>
+<div id="9a9bf9a9" class="cell" data-execution_count="104">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">bisection</span>( f, a, b; tol<span class="op">=</span><span class="fl">1e-10</span>, N<span class="op">=</span><span class="fl">100</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> [];</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> (a<span class="op">+</span>b)<span class="op">/</span><span class="fl">2</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="fu">push!</span>(x, c)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ( <span class="fu">abs</span>( <span class="fu">f</span>( c ) ) <span class="op">&lt;</span> tol )</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">println</span>(<span class="st">"converged in "</span>, n, <span class="st">" iterations"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> x </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elseif</span> ( <span class="fu">f</span>(a)<span class="fu">*f</span>(c) <span class="op">&lt;</span> <span class="fl">0</span> )</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> c</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> c </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@warn</span> <span class="st">"did not converge after </span><span class="sc">$</span>N<span class="st"> iterations"</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> x <span class="op">-&gt;</span> <span class="fu">cos</span>( <span class="fl">10</span> <span class="op">*</span> x<span class="op">^</span><span class="fl">2</span> ); </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="fu">bisection</span>( f, <span class="fl">0.0</span>, <span class="fl">1.0</span> );</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>ξ <span class="op">=</span> <span class="fu">sqrt</span>(<span class="cn">pi</span><span class="op">/</span><span class="fl">20</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(x) x (@.<span class="fu">abs</span>(x<span class="op">-</span>ξ))]</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="fu">pretty_table</span>( </span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    data;</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    header <span class="op">=</span> [<span class="st">"n"</span>, <span class="st">"x[n]"</span>, <span class="st">"|x[n] - ξ|"</span>],</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( f , <span class="fl">0</span>, <span class="fl">1</span>, legend<span class="op">=</span><span class="cn">false</span>, lw <span class="op">=</span> <span class="fl">2</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter!</span>( [x[<span class="kw">end</span>]], [<span class="fu">f</span>(x[<span class="kw">end</span>])], color<span class="op">=</span><span class="st">"red"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>converged in 35 iterations
+
+┌────┬──────────┬─────────────┐
+
+│<span class="ansi-bold">  n </span>│<span class="ansi-bold">     x[n] </span>│<span class="ansi-bold">  |x[n] - ξ| </span>│
+
+├────┼──────────┼─────────────┤
+
+│  1 │      0.5 │    0.103667 │
+
+│  2 │     0.25 │    0.146333 │
+
+│  3 │    0.375 │   0.0213327 │
+
+│  4 │   0.4375 │   0.0411673 │
+
+│  5 │  0.40625 │  0.00991727 │
+
+│  6 │ 0.390625 │  0.00570773 │
+
+│  7 │ 0.398438 │  0.00210477 │
+
+│  8 │ 0.394531 │  0.00180148 │
+
+│  9 │ 0.396484 │ 0.000151645 │
+
+│ 10 │ 0.395508 │ 0.000824917 │
+
+│ 11 │ 0.395996 │ 0.000336636 │
+
+│ 12 │  0.39624 │  9.24954e-5 │
+
+│ 13 │ 0.396362 │  2.95749e-5 │
+
+│ 14 │ 0.396301 │  3.14602e-5 │
+
+│ 15 │ 0.396332 │  9.42651e-7 │
+
+│ 16 │ 0.396347 │  1.43161e-5 │
+
+│ 17 │ 0.396339 │  6.68674e-6 │
+
+│ 18 │ 0.396336 │  2.87205e-6 │
+
+│ 19 │ 0.396334 │  9.64697e-7 │
+
+│ 20 │ 0.396333 │  1.10231e-8 │
+
+│ 21 │ 0.396332 │  4.65814e-7 │
+
+│ 22 │ 0.396333 │  2.27395e-7 │
+
+│ 23 │ 0.396333 │  1.08186e-7 │
+
+│ 24 │ 0.396333 │  4.85816e-8 │
+
+│ 25 │ 0.396333 │  1.87792e-8 │
+
+│ 26 │ 0.396333 │  3.87807e-9 │
+
+│ 27 │ 0.396333 │  3.57251e-9 │
+
+│ 28 │ 0.396333 │ 1.52781e-10 │
+
+│ 29 │ 0.396333 │  1.70986e-9 │
+
+│ 30 │ 0.396333 │ 7.78542e-10 │
+
+│ 31 │ 0.396333 │ 3.12881e-10 │
+
+│ 32 │ 0.396333 │ 8.00501e-11 │
+
+│ 33 │ 0.396333 │ 3.63652e-11 │
+
+│ 34 │ 0.396333 │ 2.18424e-11 │
+
+│ 35 │ 0.396333 │ 7.26141e-12 │
+
+└────┴──────────┴─────────────┘
+</pre>
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="104">
+<div>
+<figure class="figure">
+<p><img src="A3 Solutions_files/figure-html/cell-11-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>✍ Suppose there exists a unique root <span class="math inline">\xi \in [a,b]</span>. What is the order of convergence of the bisection method? What is the asymptotic error constant?</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>We have <span class="math inline">x_1 = \frac{a + b}{2}</span> and thus <span class="math inline">|x_1 - \xi| \leq \frac{1}{2}(b-a)</span>. Moreover, since the size of the interval containing <span class="math inline">\xi</span> is halved at each iteration, we have <span class="math inline">|x_n - \xi| \leq \big(\frac{1}{2}\big)^{n} (b-a)</span>. As a result, the bisection method converges linearly with asymptotic error constant <span class="math inline">\frac12</span>.</p>
+</div>
+<ol start="3" type="1">
+<li>✍💻 Plot <span class="math inline">f(x) = (1+x^2) \mathrm{sign}(x - \xi)</span> and explain what happens when you apply the bisection method to <span class="math inline">f</span>,</li>
+</ol>
+<div class="alert alert-block alert-success">
+<p><b>Answer.</b></p>
+<p>The algorithm should run as normal and converge to <span class="math inline">\xi</span>: the same bracketing argument applies to <span class="math inline">f</span> because it only has one point of discontinuity and a unique point at which the sign of <span class="math inline">f</span> changes.</p>
+</div>
+<div id="d4c1e5e7" class="cell" data-execution_count="105">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ξ, f <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="cn">π</span>, x <span class="op">-&gt;</span> (<span class="fl">1</span> <span class="op">+</span> x<span class="op">^</span><span class="fl">2</span>) <span class="op">*</span> <span class="fu">sign</span>(x <span class="op">-</span> ξ)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="fu">bisection</span>( f, <span class="fl">0.0</span>, <span class="fl">1.0</span> );</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(x) x (@.<span class="fu">abs</span>(x<span class="op">-</span>ξ))]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pretty_table</span>( </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    data;</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    header <span class="op">=</span> [<span class="st">"n"</span>, <span class="st">"x[n]"</span>, <span class="st">"|x[n] - ξ|"</span>],</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( f , <span class="fl">0</span>, <span class="fl">1</span>, legend<span class="op">=</span><span class="cn">false</span>, lw <span class="op">=</span> <span class="fl">2</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter!</span>( [x[<span class="kw">end</span>]], [<span class="fl">0</span>], color<span class="op">=</span><span class="st">"red"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>converged in 54 iterations
+
+┌────┬──────────┬─────────────┐
+
+│<span class="ansi-bold">  n </span>│<span class="ansi-bold">     x[n] </span>│<span class="ansi-bold">  |x[n] - ξ| </span>│
+
+├────┼──────────┼─────────────┤
+
+│  1 │      0.5 │     0.18169 │
+
+│  2 │     0.25 │   0.0683099 │
+
+│  3 │    0.375 │   0.0566901 │
+
+│  4 │   0.3125 │  0.00580989 │
+
+│  5 │  0.34375 │   0.0254401 │
+
+│  6 │ 0.328125 │  0.00981511 │
+
+│  7 │ 0.320312 │  0.00200261 │
+
+│  8 │ 0.316406 │  0.00190364 │
+
+│  9 │ 0.318359 │  4.94888e-5 │
+
+│ 10 │ 0.317383 │ 0.000927074 │
+
+│ 11 │ 0.317871 │ 0.000438792 │
+
+│ 12 │ 0.318115 │ 0.000194652 │
+
+│ 13 │ 0.318237 │  7.25815e-5 │
+
+│ 14 │ 0.318298 │  1.15463e-5 │
+
+│ 15 │ 0.318329 │  1.89712e-5 │
+
+│ 16 │ 0.318314 │  3.71245e-6 │
+
+│ 17 │ 0.318306 │  3.91695e-6 │
+
+│ 18 │  0.31831 │  1.02248e-7 │
+
+│ 19 │ 0.318312 │   1.8051e-6 │
+
+│ 20 │ 0.318311 │  8.51426e-7 │
+
+│ 21 │  0.31831 │  3.74589e-7 │
+
+│ 22 │  0.31831 │   1.3617e-7 │
+
+│ 23 │  0.31831 │   1.6961e-8 │
+
+│ 24 │  0.31831 │  4.26436e-8 │
+
+│ 25 │  0.31831 │  1.28413e-8 │
+
+│ 26 │  0.31831 │  2.05988e-9 │
+
+│ 27 │  0.31831 │   5.3907e-9 │
+
+│ 28 │  0.31831 │  1.66541e-9 │
+
+│ 29 │  0.31831 │ 1.97239e-10 │
+
+│ 30 │  0.31831 │ 7.34083e-10 │
+
+│ 31 │  0.31831 │ 2.68422e-10 │
+
+│ 32 │  0.31831 │ 3.55913e-11 │
+
+│ 33 │  0.31831 │ 8.08241e-11 │
+
+│ 34 │  0.31831 │ 2.26164e-11 │
+
+│ 35 │  0.31831 │ 6.48742e-12 │
+
+│ 36 │  0.31831 │ 8.06449e-12 │
+
+│ 37 │  0.31831 │ 7.88536e-13 │
+
+│ 38 │  0.31831 │ 2.84944e-12 │
+
+│ 39 │  0.31831 │ 1.03045e-12 │
+
+│ 40 │  0.31831 │ 1.20959e-13 │
+
+│ 41 │  0.31831 │ 3.33789e-13 │
+
+│ 42 │  0.31831 │ 1.06415e-13 │
+
+│ 43 │  0.31831 │ 7.27196e-15 │
+
+│ 44 │  0.31831 │ 4.95715e-14 │
+
+│ 45 │  0.31831 │ 2.11497e-14 │
+
+│ 46 │  0.31831 │ 6.93889e-15 │
+
+│ 47 │  0.31831 │ 1.66533e-16 │
+
+│ 48 │  0.31831 │ 3.38618e-15 │
+
+│ 49 │  0.31831 │ 1.60982e-15 │
+
+│ 50 │  0.31831 │ 7.21645e-16 │
+
+│ 51 │  0.31831 │ 2.77556e-16 │
+
+│ 52 │  0.31831 │ 5.55112e-17 │
+
+│ 53 │  0.31831 │ 5.55112e-17 │
+
+│ 54 │  0.31831 │         0.0 │
+
+└────┴──────────┴─────────────┘
+</pre>
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="105">
+<div>
+<figure class="figure">
+<p><img src="A3 Solutions_files/figure-html/cell-12-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="1">
+<li>💻 Use the bisection method to approximate <span class="math inline">\Omega = W(1)</span>,</li>
+</ol>
+<div id="a67003f8" class="cell" data-execution_count="106">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ξ, f <span class="op">=</span> Ω, x <span class="op">-&gt;</span> <span class="fu">x*exp</span>(x)<span class="op">-</span><span class="fl">1</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="fu">bisection</span>( f, <span class="fl">0.0</span>, <span class="fl">1.0</span> );</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(x) x (@.<span class="fu">abs</span>(x<span class="op">-</span>ξ))]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pretty_table</span>( </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    data;</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    header <span class="op">=</span> [<span class="st">"n"</span>, <span class="st">"x[n]"</span>, <span class="st">"|x[n] - ξ|"</span>],</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( f , <span class="fl">0</span>, <span class="fl">1</span>, legend<span class="op">=</span><span class="cn">false</span>, lw <span class="op">=</span> <span class="fl">2</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter!</span>( [x[<span class="kw">end</span>]], [<span class="fl">0</span>], color<span class="op">=</span><span class="st">"red"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>converged in 33 iterations
+
+┌────┬──────────┬─────────────┐
+
+│<span class="ansi-bold">  n </span>│<span class="ansi-bold">     x[n] </span>│<span class="ansi-bold">  |x[n] - ξ| </span>│
+
+├────┼──────────┼─────────────┤
+
+│  1 │      0.5 │   0.0671433 │
+
+│  2 │     0.75 │    0.182857 │
+
+│  3 │    0.625 │   0.0578567 │
+
+│  4 │   0.5625 │  0.00464329 │
+
+│  5 │  0.59375 │   0.0266067 │
+
+│  6 │ 0.578125 │   0.0109817 │
+
+│  7 │ 0.570312 │  0.00316921 │
+
+│  8 │ 0.566406 │  0.00073704 │
+
+│  9 │ 0.568359 │  0.00121608 │
+
+│ 10 │ 0.567383 │ 0.000239522 │
+
+│ 11 │ 0.566895 │ 0.000248759 │
+
+│ 12 │ 0.567139 │  4.61853e-6 │
+
+│ 13 │ 0.567261 │ 0.000117452 │
+
+│ 14 │   0.5672 │  5.64166e-5 │
+
+│ 15 │ 0.567169 │   2.5899e-5 │
+
+│ 16 │ 0.567154 │  1.06403e-5 │
+
+│ 17 │ 0.567146 │  3.01086e-6 │
+
+│ 18 │ 0.567142 │  8.03838e-7 │
+
+│ 19 │ 0.567144 │  1.10351e-6 │
+
+│ 20 │ 0.567143 │  1.49837e-7 │
+
+│ 21 │ 0.567143 │     3.27e-7 │
+
+│ 22 │ 0.567143 │  8.85818e-8 │
+
+│ 23 │ 0.567143 │  3.06275e-8 │
+
+│ 24 │ 0.567143 │  2.89771e-8 │
+
+│ 25 │ 0.567143 │ 8.25186e-10 │
+
+│ 26 │ 0.567143 │   1.4076e-8 │
+
+│ 27 │ 0.567143 │   6.6254e-9 │
+
+│ 28 │ 0.567143 │   2.9001e-9 │
+
+│ 29 │ 0.567143 │  1.03746e-9 │
+
+│ 30 │ 0.567143 │ 1.06137e-10 │
+
+│ 31 │ 0.567143 │ 3.59524e-10 │
+
+│ 32 │ 0.567143 │ 1.26694e-10 │
+
+│ 33 │ 0.567143 │ 1.02783e-11 │
+
+└────┴──────────┴─────────────┘
+</pre>
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="106">
+<div>
+<figure class="figure">
+<p><img src="A3 Solutions_files/figure-html/cell-13-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="5" type="1">
+<li>💻 Use the bisection method to approximate <span class="math inline">\sqrt{2}</span>.</li>
+</ol>
+<div id="34f86b6c" class="cell" data-execution_count="107">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ξ, f <span class="op">=</span> <span class="fu">sqrt</span>(<span class="fl">2</span>), x <span class="op">-&gt;</span> x<span class="op">^</span><span class="fl">2</span><span class="op">-</span><span class="fl">2</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="fu">bisection</span>( f, <span class="fl">0.0</span>, <span class="fl">2.0</span> );</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(x) x (@.<span class="fu">abs</span>(x<span class="op">-</span>ξ))]</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pretty_table</span>( </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    data;</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    header <span class="op">=</span> [<span class="st">"n"</span>, <span class="st">"x[n]"</span>, <span class="st">"|x[n] - ξ|"</span>],</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( f , <span class="fl">0</span>, <span class="fl">2</span>, legend<span class="op">=</span><span class="cn">false</span>, lw <span class="op">=</span> <span class="fl">2</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter!</span>( [x[<span class="kw">end</span>]], [<span class="fl">0</span>], color<span class="op">=</span><span class="st">"red"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>converged in 30 iterations
+
+┌────┬─────────┬─────────────┐
+
+│<span class="ansi-bold">  n </span>│<span class="ansi-bold">    x[n] </span>│<span class="ansi-bold">  |x[n] - ξ| </span>│
+
+├────┼─────────┼─────────────┤
+
+│  1 │     1.0 │    0.414214 │
+
+│  2 │     1.5 │   0.0857864 │
+
+│  3 │    1.25 │    0.164214 │
+
+│  4 │   1.375 │   0.0392136 │
+
+│  5 │  1.4375 │   0.0232864 │
+
+│  6 │ 1.40625 │  0.00796356 │
+
+│  7 │ 1.42188 │  0.00766144 │
+
+│  8 │ 1.41406 │ 0.000151062 │
+
+│  9 │ 1.41797 │  0.00375519 │
+
+│ 10 │ 1.41602 │  0.00180206 │
+
+│ 11 │ 1.41504 │   0.0008255 │
+
+│ 12 │ 1.41455 │ 0.000337219 │
+
+│ 13 │ 1.41431 │  9.30783e-5 │
+
+│ 14 │ 1.41418 │  2.89921e-5 │
+
+│ 15 │ 1.41425 │  3.20431e-5 │
+
+│ 16 │ 1.41422 │  1.52552e-6 │
+
+│ 17 │  1.4142 │  1.37333e-5 │
+
+│ 18 │ 1.41421 │  6.10388e-6 │
+
+│ 19 │ 1.41421 │  2.28918e-6 │
+
+│ 20 │ 1.41421 │  3.81831e-7 │
+
+│ 21 │ 1.41421 │  5.71843e-7 │
+
+│ 22 │ 1.41421 │  9.50061e-8 │
+
+│ 23 │ 1.41421 │  1.43413e-7 │
+
+│ 24 │ 1.41421 │  2.42032e-8 │
+
+│ 25 │ 1.41421 │  3.54014e-8 │
+
+│ 26 │ 1.41421 │  5.59909e-9 │
+
+│ 27 │ 1.41421 │  9.30207e-9 │
+
+│ 28 │ 1.41421 │  1.85149e-9 │
+
+│ 29 │ 1.41421 │   1.8738e-9 │
+
+│ 30 │ 1.41421 │ 1.11526e-11 │
+
+└────┴─────────┴─────────────┘
+</pre>
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="107">
+<div>
+<figure class="figure">
+<p><img src="A3 Solutions_files/figure-html/cell-14-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/z\.umn\.edu\/Math5485");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./A2 Solutions.html" class="pagination-link" aria-label="A2: Floating-point numbers, conditioning, and order of convergence">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">A2: Floating-point numbers, conditioning, and order of convergence</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./A4 Solution.html" class="pagination-link" aria-label="A4: Solving nonlinear equations in 1d II">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">A4: Solving nonlinear equations in 1d II</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

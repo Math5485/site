@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Conditioning &amp; Stability – Math 5485</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./L4 Solving nonlinear equations in 1d.html" rel="next">
+<link href="./L2 How computers add.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-70a47bd5681a7291082a5b9f83d58762.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<link rel="icon" href="pi.ico" type="image/icon type">
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./L1 Introduction to Math 5485.html">Lectures</a></li><li class="breadcrumb-item"><a href="./L3 Stability and Conditioning.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning &amp; Stability</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Math 5485</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L1 Introduction to Math 5485.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L2 How computers add.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How do computers add?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L3 Stability and Conditioning.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning &amp; Stability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L4 Solving nonlinear equations in 1d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Solving nonlinear equations in 1d</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L5 Solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exercises (Chapter 2)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L6-7 Solving nonlinear equations in 1d II.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Solving nonlinear equations in 1d II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L8 Polynomial Interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Chapter 3: Polynomial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L9 Polynomial Interpolation II.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Polynomial Interpolation II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L10 Polynomial Interpolation III.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Polynomial Interpolation III</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L11 Exercises.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exercises (Chapter 3)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./L12 Newton-Cotes Quadrature.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Newton-Cotes Quadrature</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Assignments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A1 Solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">A1: Jupyter Notebooks, LaTeX &amp; Julia</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A2 Solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">A2: Floating-point numbers, conditioning, and order of convergence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A3 Solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">A3: Solving nonlinear equations in 1d</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A4 Solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">A4: Solving nonlinear equations in 1d II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A5 Solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">A5: Solving nonlinear equations in 1d III</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#polynomial-roots-as-a-function-of-monomial-basis-coefficients" id="toc-polynomial-roots-as-a-function-of-monomial-basis-coefficients" class="nav-link active" data-scroll-target="#polynomial-roots-as-a-function-of-monomial-basis-coefficients"><span class="header-section-number">3.1</span> Polynomial roots as a function of monomial basis coefficients</a></li>
+  <li><a href="#stability-an-example" id="toc-stability-an-example" class="nav-link" data-scroll-target="#stability-an-example"><span class="header-section-number">3.2</span> <span id="arithmetic">Stability: An Example</span></a></li>
+  <li><a href="#fnc-exercises" id="toc-fnc-exercises" class="nav-link" data-scroll-target="#fnc-exercises"><span class="header-section-number">3.3</span> FNC Exercises</a></li>
+  <li><a href="#sec-two" id="toc-sec-two" class="nav-link" data-scroll-target="#sec-two"><span class="header-section-number">3.4</span> Chapter 2. Solving nonlinear equations in 1d</a></li>
+  </ul>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="0 Syllabus.pdf"><i class="bi bi-file-pdf"></i>Syllabus</a></li><li><a href="https://fncbook.com/"><i class="bi bi-link-45deg"></i>FNC book</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./L1 Introduction to Math 5485.html">Lectures</a></li><li class="breadcrumb-item"><a href="./L3 Stability and Conditioning.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning &amp; Stability</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning &amp; Stability</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a id="top"></a></p>
+<div style="background-color: #ffe0b2; padding: 10px; border-left: 5px solid #ff9800;">
+<p><strong>Note:</strong> This lecture is based on Chapter 1 of [Fundamentals of Numerical Computation by Driscoll, Braun] which is avaliable <a href="https://fncbook.com/overview/">online</a></p>
+</div>
+<div style="background-color: #ffe0b2; padding: 10px; border-left: 5px solid #ff9800;">
+<pre><code>&lt;strong&gt;Note:&lt;/strong&gt; </code></pre>
+<p>These notes contain some (but not all) of the content of the lecture. Please let me know if there are any additions that you feel are particularly important and let me know if you find any errors.</p>
+</div>
+<ul>
+<li>Review of monday: floating point numbers, round off error</li>
+<li>Conditioning</li>
+<li>Stability</li>
+<li>Extra reading
+<ul>
+<li><a href="https://people.maths.ox.ac.uk/trefethen/mythspaper.pdf">myths of polynomial interpolation</a></li>
+</ul></li>
+</ul>
+<div class="alert alert-block alert-danger">
+<p><b>⚠ Subtractive cancellation</b></p>
+When adding or subtracting numbers so that the result is much smaller in magnitude. For example, we know <span class="math inline">x = -1.0000000000000000000147</span> to <span class="math inline">23</span> significant digits but <span class="math inline">x + 1 = -1.47 \times 10^{-20}</span> to only <span class="math inline">3</span> significant digits.
+</div>
+<p>This concept can be illustrated using (relative) condition number: suppose we are interested in a quantity <span class="math inline">f(x)</span> for <span class="math inline">x\in \mathbb R</span>. In practice, we can only store <span class="math inline">\widetilde{x} := \mathrm{fl}(x)</span> in a computer (recall that <span class="math inline">\widetilde{x} = x(1 + \epsilon)</span> for some <span class="math inline">|\epsilon|\leq \frac12 \epsilon_{\mathrm{mach}}</span>). Then the ratio of the relative error in the output to the relative error in the input in the limit as the precision goes to zero is known as the <em>(relative) condition number</em> <span class="math inline">\kappa_f(x)</span>:</p>
+<div style="background-color: #ddff99; padding: 10px; border-left: 5px solid #009933;">
+<p><strong>Definition (relative condition number).</strong></p>
+<p><span class="math display">\begin{align}
+\kappa_f(x) := \lim_{\epsilon\to0}\left|
+    \frac
+        {f(x) - f(x + \epsilon x)}
+        {\epsilon f(x)}
+    \right| \nonumber
+    %
+\end{align}</span></p>
+</div>
+<p>That is, the (relative) condition number is approximately the constant of proportionality between the relative error in the output and the relative error of the input:</p>
+<p><span class="math display">\begin{align}
+    \left|\frac
+        {f(x) - f(\widetilde{x})}
+        {f(x)} \right|
+    \approx \kappa_f(x) |\epsilon|. \nonumber
+\end{align}</span></p>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p><strong>Example.</strong></p>
+The condition number of <span class="math inline">f(x) = x + 1</span> is <span class="math inline">\kappa_f(x) = \left|\frac{x}{x+1}\right|</span>. This blows up when <span class="math inline">x\approx -1</span> which explains subtractive cancellation that we mentioned above.
+</div>
+<div style="background-color: #ddff99; padding: 10px; border-left: 5px solid #009933;">
+<p><strong>Definition.</strong></p>
+If the condition number is large, we say the problem is <em>ill-conditioned</em> or the problem is badly conditioned
+</div>
+<p>Notice that</p>
+<p><span class="math display">\begin{align}
+    \kappa_f(x) &amp;= \lim_{\epsilon\to0}\left|
+    \frac
+        {f(x) - f(x + \epsilon x)}
+        {\epsilon f(x)}
+    \right| \nonumber\\
+    %
+    &amp;= \lim_{\epsilon\to0}\left|
+    \frac
+        {f(x) - f(x + \epsilon x)}
+        {\epsilon x}
+    \right|
+    \left| \frac{x}{f(x)} \right| \nonumber\\
+    %
+    &amp;= \left| \frac{x f'(x)}{f(x)} \right|
+\end{align}</span></p>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p><strong>Examples.</strong></p>
+<p>Suppose <span class="math display">\begin{align}
+    f_1(x) = cx, \qquad f_2(x) = \log(x), \qquad f_3(x) = e^x, \qquad f_4(x) = x^p
+\end{align}</span></p>
+What is <span class="math inline">\kappa_{f_j}(x)</span> for <span class="math inline">j=1,2,3,4</span>?
+</div>
+<section id="polynomial-roots-as-a-function-of-monomial-basis-coefficients" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="polynomial-roots-as-a-function-of-monomial-basis-coefficients"><span class="header-section-number">3.1</span> Polynomial roots as a function of monomial basis coefficients</h2>
+<p>The polynomial</p>
+<p><span class="math display">\begin{align}
+    a \xi^2 + b \xi + c = 0
+\end{align}</span></p>
+<p>has roots <span class="math inline">\xi_1,\xi_2</span>. Fix <span class="math inline">b,c</span> and consider <span class="math inline">\xi_1 = \xi_1(a)</span>. What is <span class="math inline">\kappa_{\xi_1}(a)</span>?</p>
+<div class="alert alert-block alert-danger">
+<p><b>⚠ Warning.</b></p>
+<p>Polynomials are only badly conditioned with respect to the monomial basis <span class="math inline">\{ x^j \}_{j=0,1,2,...}</span>. Computing with e.g.&nbsp;Chebyshev polynomials <span class="math inline">\{T_j(x)\}_j</span> instead is well conditioned. This is a potential topic for a presentation next term! e.g.&nbsp;understand and explain <a href="https://www.chebfun.org/examples/linalg/CondNos.html">this</a>, <a href="https://www.chebfun.org/examples/linalg/CondVandermonde.html">this</a>, ….</p>
+</div>
+<p>Poor conditioning is a problem with the problem! On the other hand, if we see a large error in the result, the problem might be with the solution! That is, the algorithm can also introduce errors. When the error can not be explained by an ill-conditioned problem, we will say the algorithm is <em>unstable</em>.</p>
+</section>
+<section id="stability-an-example" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="stability-an-example"><span class="header-section-number">3.2</span> <span id="arithmetic">Stability: An Example</span></h2>
+<p>Consider <span class="math inline">\xi^2 - (10^n + 10^{-n})\xi + 1 = 0</span>. The roots of this equation are <span class="math inline">\xi_1 := 10^{-n}</span> and <span class="math inline">\xi_2 := 10^n</span>. These roots are well separated so we expect the problem of finding the roots to be well-conditioned. We show below that the quadratic formula is <strong><em>unstable</em></strong>.</p>
+<p>The quadratic formula in floating point arithmetic gives:</p>
+<div id="50158bc2-03ac-415b-b2a4-ec59c04c71d7" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="fl">8</span>;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>a, b, c <span class="op">=</span> <span class="fl">1</span>, <span class="fu">-</span>(<span class="fl">10.0</span><span class="op">^</span>n <span class="op">+</span> <span class="fl">10.0</span><span class="op">^</span>(<span class="op">-</span>n)), <span class="fl">1</span>;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ξ<span class="fl">1</span>, ξ<span class="fl">2</span> <span class="op">=</span> ( <span class="op">-</span>b <span class="op">-</span> <span class="fu">sqrt</span>( b<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span>a<span class="op">*</span>c) )<span class="op">/</span>(<span class="fl">2</span><span class="op">*</span>a), ( <span class="op">-</span>b <span class="op">+</span> <span class="fu">sqrt</span>( b<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span>a<span class="op">*</span>c) )<span class="op">/</span>(<span class="fl">2</span><span class="op">*</span>a);</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> ( ξ<span class="fl">1</span>, ξ<span class="fl">2</span> ) ;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(ξ1, ξ2) = (1.4901161193847656e-8, 1.0e8)</code></pre>
+</div>
+</div>
+<p>The error in approximating the first root is quite big!</p>
+<div id="eec9afba" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>( <span class="st">"relative errors = ("</span>, <span class="fu">abs</span>( ξ<span class="fl">1</span> <span class="op">-</span> <span class="fl">10.0</span><span class="op">^</span>(<span class="op">-</span>n) )<span class="op">/</span><span class="fl">10.0</span><span class="op">^</span>(<span class="op">-</span>n) , <span class="st">", "</span>, <span class="fu">abs</span>( ξ<span class="fl">2</span> <span class="op">-</span> <span class="fl">10.0</span><span class="op">^</span>n )<span class="op">/</span><span class="fl">10.0</span><span class="op">^</span>n, <span class="st">")"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>relative errors = (0.49011611938476557, 0.0)</code></pre>
+</div>
+</div>
+<p>But why?</p>
+<div id="3d6adcc9" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>1.0000000000000001e8</code></pre>
+</div>
+</div>
+<div id="0461b86e" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>( b<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span> <span class="op">*</span> a <span class="op">*</span> c )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>9.999999999999999e7</code></pre>
+</div>
+</div>
+<div id="60a86782" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>b <span class="op">-</span> <span class="fu">sqrt</span>( b<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span>a<span class="op">*</span>c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>2.9802322387695312e-8</code></pre>
+</div>
+</div>
+<p>The function <span class="math inline">f(x) = x -\sqrt{ b^2 - 4ac }</span> has condition number <span class="math inline">\kappa = \kappa_f(-b)</span> given by</p>
+<div id="4dca72a1" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>κ <span class="op">=</span> <span class="fu">abs</span>( b<span class="op">*</span><span class="fl">1</span> <span class="op">/</span> ( <span class="op">-</span>b <span class="op">-</span> <span class="fu">sqrt</span>(b<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span>a<span class="op">*</span>c) ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>3.3554432000000005e15</code></pre>
+</div>
+</div>
+<p>This condition number is large due to <strong><em>Subtractive Cancellation</em></strong>! The quadratic formula is thus ill-conditioned. Alternatively we could compute <span class="math inline">\xi_1</span> from <span class="math inline">\xi_2</span>:</p>
+<div id="702f84b7" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ξ<span class="fl">1</span> <span class="op">=</span> (c<span class="op">/</span>a)<span class="op">/</span>ξ<span class="fl">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>1.0e-8</code></pre>
+</div>
+</div>
+<p>Which is exact in <code>Float64</code>.</p>
+<p>Another way of computing <span class="math inline">\xi_1</span> is to <strong><em>rationalise the numerator</em></strong>:</p>
+<p><span class="math display">\begin{align}
+    \xi_1
+    &amp;= \frac{ -b - \sqrt{ b^2 - 4ac } }{2a} \\
+    %
+    &amp;= \frac{ -b - \sqrt{ b^2 - 4ac } }{2a}
+    \times \frac{ -b + \sqrt{ b^2 - 4ac } }{-b + \sqrt{ b^2 - 4ac } } \nonumber\\
+    %
+    &amp;= \frac
+        { b^2 - ( b^2 - 4ac ) }
+        {2a( -b + \sqrt{ b^2 - 4ac } )} \\
+    %
+    &amp;= \frac
+        { 2c }
+        { -b + \sqrt{ b^2 - 4ac } }
+\end{align}</span></p>
+<p>Using this formula, we get</p>
+<div id="675f5d8e" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ξ<span class="fl">1</span> <span class="op">=</span> <span class="fl">2</span><span class="op">*</span>c <span class="op">/</span> ( <span class="op">-</span>b <span class="op">+</span> <span class="fu">sqrt</span>(b<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span>a<span class="op">*</span>c) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>1.0e-8</code></pre>
+</div>
+</div>
+<p>Which is again exact in <code>Float64</code></p>
+</section>
+<section id="fnc-exercises" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="fnc-exercises"><span class="header-section-number">3.3</span> FNC Exercises</h2>
+<p>We then looked at questions 1.4.1 and 1.4.2 from <a href="https://fncbook.com/overview/">[Fundamentals of Numerical Computation by Driscoll, Braun]</a></p>
+<div id="a2a3bc9d" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> x <span class="op">-&gt;</span> (<span class="fl">1</span> <span class="op">-</span> <span class="fu">cos</span>(x) )<span class="op">/</span><span class="fu">sin</span>(x)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> x <span class="op">-&gt;</span> <span class="fl">2</span><span class="fu">*sin</span>(x<span class="op">/</span><span class="fl">2</span>)<span class="op">^</span><span class="fl">2</span><span class="op">/</span><span class="fu">sin</span>(x)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>(<span class="fu">f</span>(<span class="fl">1e-6</span>), <span class="fu">g</span>(<span class="fl">1e-6</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>(5.000444502912538e-7, 5.000000000000416e-7)</code></pre>
+</div>
+</div>
+<div id="227b3d4e" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> @. <span class="fl">10.0</span><span class="op">^</span>(<span class="fu">-</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">11</span>));</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> @. (<span class="fu">exp</span>(x) <span class="op">-</span> <span class="fl">1</span>)<span class="op">/</span>x;</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>p<span class="op">=</span><span class="fl">1</span>;</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> @. p <span class="op">+</span> x<span class="op">^</span>n<span class="op">/</span>( <span class="fu">factorial</span>(n<span class="op">+</span><span class="fl">1</span>) );</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span> </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>.(f<span class="op">-</span>p) <span class="op">./</span> x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>11-element Vector{Float64}:
+    1.1102230246251565e-14
+    1.0658141036401503e-12
+    4.285460875053104e-11
+    4.32542890393961e-9
+    9.701794922989393e-7
+    3.798317216308078e-5
+    0.005663214341922185
+    1.1077470940534795
+   82.24037095772019
+  826.9037099495335
+ 8273.537099867668</code></pre>
+</div>
+</div>
+<div id="d12ebef6" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># upper bound on the error between f and p as functions on x</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> @. (<span class="fl">1</span><span class="op">/</span><span class="fu">factorial</span>(<span class="fl">10</span>)) <span class="op">*</span> (x<span class="op">^</span><span class="fl">9</span><span class="op">/</span>(<span class="fl">1</span><span class="op">-</span>x))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>11-element Vector{Float64}:
+ 3.061924358220656e-16
+ 2.7835675983824133e-25
+ 2.758490412811401e-34
+ 2.7560075231509052e-43
+ 2.755759479993391e-52
+ 2.755734678133266e-61
+ 2.7557321979718073e-70
+ 2.755731949955909e-79
+ 2.755731925154322e-88
+ 2.7557319226741635e-97
+ 2.755731922426145e-106</code></pre>
+</div>
+</div>
+</section>
+<section id="sec-two" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="sec-two"><span class="header-section-number">3.4</span> Chapter 2. Solving nonlinear equations in 1d</h2>
+<div style="background-color: #ffe0b2; padding: 10px; border-left: 5px solid #ff9800;">
+<strong>Note.</strong> This chapter will be mainly based on Chapter 1 of An Introduction to Numerical Analysis by Süli, Mayers. These notes are mainly a record of what we discussed and are not a substitute for attending the lectures and reading books! If anything is unclear/wrong, let me know and I will update the notes.
+</div>
+<ul>
+<li>Simple functions can be solved explicitly <span class="math inline">ax^2 + bx + c = 0</span> (also true for degree <span class="math inline">3,4</span>)<br>
+</li>
+<li><span class="math inline">x^5 - 4x - 2 = 0</span> - no closed formula for roots of this equation</li>
+</ul>
+<div id="45dbc198" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Polynomials</span>  </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LaTeXStrings</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="f11502ed" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="fu">Polynomial</span>([<span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>]) </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> p;</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p, legend<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot!</span>( <span class="fu">real</span>( <span class="fu">filter</span>( isreal, <span class="fu">roots</span>(p) ) ), <span class="fu">zeros</span>(<span class="fl">3</span>), seriestype<span class="op">=:</span>scatter )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>p = Polynomial(-2 - 4*x + x^5)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+<figure class="figure">
+<p><img src="L3 Stability and Conditioning_files/figure-html/cell-14-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Need numerical methods to get the roots!</li>
+<li>Aim: for <span class="math inline">f: [a,b] \to \mathbb R</span>, solve <span class="math inline">f(\xi) = 0</span> for <span class="math inline">\xi \in \mathbb R</span>,</li>
+<li>Also, can find <span class="math inline">\xi</span> such that <span class="math inline">f(\xi) = c</span> (by considering <span class="math inline">x \mapsto f(x) - c</span>) or stationary points (by considering <span class="math inline">f = F'</span>),</li>
+<li>Simple examples with no solution, e.g.&nbsp;<span class="math inline">f(x) = x^2 + 1</span></li>
+<li>Change of sign theorem: if <span class="math inline">f</span> is continuous on <span class="math inline">[a,b]</span> and <span class="math inline">f(a) f(b) \leq 0</span> then there exists <span class="math inline">\xi \in [a,b]</span> with <span class="math inline">f(\xi) = 0</span>. Proof: apply intermediate value theorem.</li>
+</ul>
+<div class="alert alert-block alert-danger">
+<p><b>Remark.</b></p>
+The converse to this theorem is untrue. i.e.&nbsp;there exists <span class="math inline">f</span> with a real root in <span class="math inline">[a,b]</span> but with <span class="math inline">f(a)f(b) &gt; 0</span>.
+</div>
+<ul>
+<li>Rewrite as a fixed point problem <span class="math inline">g(x) = x</span> (for example, we could define <span class="math inline">g(x) := x \pm f(x)</span>)</li>
+<li>Brouwer’s fixed point theorem: Suppose <span class="math inline">g : [a,b]\to\mathbb R</span> is continuous with <span class="math inline">g(x) \in [a,b]</span> for all <span class="math inline">x \in [a,b]</span>. Then, there exists <span class="math inline">\xi\in [a,b]</span> with <span class="math inline">g(\xi) = \xi</span>. Proof: apply change of sign theorem to <span class="math inline">f(x) := g(x) - x</span>.</li>
+</ul>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p><strong>Example.</strong></p>
+<p>Let <span class="math inline">f(x) = e^x - 2x - 1</span>. Apply change of sign theorem to <span class="math inline">f</span> to conclude there exists <span class="math inline">\xi \in [1,2]</span> such that <span class="math inline">f(\xi) = 0</span>.</p>
+</div>
+<div id="5f8b44f0" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> x <span class="op">-&gt;</span> <span class="fu">exp</span>(x) <span class="op">-</span> <span class="fl">2</span><span class="op">*</span>x <span class="op">-</span> <span class="fl">1</span>;</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> ( <span class="fu">f</span>(<span class="fl">1</span>), <span class="fu">f</span>(<span class="fl">2</span>) )</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( f, <span class="fl">1</span>,<span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(f(1), f(2)) = (-0.2817181715409549, 2.3890560989306504)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+<figure class="figure">
+<p><img src="L3 Stability and Conditioning_files/figure-html/cell-15-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p>We could solve <span class="math inline">f(x) = 0</span> by instead considering the fixed point problems <span class="math inline">g(x) = x</span> or <span class="math inline">h(x) = x</span> where</p>
+<p><span class="math display">\begin{align}
+    g(x) = \log( 2x + 1 ), \quad  \text{and} \quad h(x) = \frac{e^x - 1}{2}
+\end{align}</span></p>
+<p>Brouwer’s fixed point theorem applies to <span class="math inline">g</span> but <strong>not</strong> <span class="math inline">h</span> on <span class="math inline">[1,2]</span>:</p>
+</div>
+<div id="be89f658" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> x <span class="op">-&gt;</span> <span class="fu">log</span>( <span class="fl">2</span><span class="op">*</span>x <span class="op">+</span> <span class="fl">1</span> );    </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> x <span class="op">-&gt;</span> (<span class="fu">exp</span>(x) <span class="op">-</span> <span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span>;</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>id <span class="op">=</span> x <span class="op">-&gt;</span> x;</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> (<span class="fu">g</span>(<span class="fl">1</span>), <span class="fu">g</span>(<span class="fl">2</span>));</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> (<span class="fu">h</span>(<span class="fl">1</span>), <span class="fu">h</span>(<span class="fl">2</span>));</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( [g, h, id], <span class="fl">1</span>, <span class="fl">2</span>, label<span class="op">=</span>[L<span class="st">"g"</span> L<span class="st">"h"</span> L<span class="st">"x"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(g(1), g(2)) = (1.0986122886681098, 1.6094379124341003)
+(h(1), h(2)) = (0.8591409142295225, 3.194528049465325)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+<figure class="figure">
+<p><img src="L3 Stability and Conditioning_files/figure-html/cell-16-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Consider iterative methods of the form <span class="math inline">x_{n+1} := g(x_n)</span> for some <span class="math inline">x_1 \in [a,b]</span></li>
+<li>Lemma: if <span class="math inline">(x_{n}) \to \xi</span> then <span class="math inline">\xi</span> is a fixed point of <span class="math inline">g</span>. Proof: Use the fact that <span class="math inline">x_{n+1}\to \xi</span> and <span class="math inline">g</span> is continuous so <span class="math inline">g(x_n)\to g(\xi)</span>.</li>
+</ul>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p><strong>Example (cont.).</strong></p>
+<p>Returning to <span class="math inline">f(x) = e^x - 2x - 1</span>, do the iterative methods <span class="math inline">x_{n+1} = g(x_n)</span> and <span class="math inline">y_{n+1} = h(y_n)</span> converge for <span class="math inline">x_1 = y_1 = 1</span>?</p>
+</div>
+<div id="1ea03f4f" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> <span class="fu">zeros</span>( <span class="fl">15</span> ), <span class="fu">zeros</span>( <span class="fl">15</span> );</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>x[<span class="fl">1</span>] <span class="op">=</span> <span class="fl">1</span>; y[<span class="fl">1</span>] <span class="op">=</span> <span class="fl">1</span>;</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">14</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    x[n<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> <span class="fu">g</span>(x[n]);</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    y[n<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> <span class="fu">h</span>(y[n]);</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> (x[<span class="fl">15</span>], y[<span class="fl">15</span>]);</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( [g, h] , <span class="op">-</span><span class="fl">0.25</span>, <span class="fl">2</span>, label<span class="op">=</span>[ L<span class="st">"f(x)"</span> L<span class="st">"x - g(x)"</span> L<span class="st">"x - h(x)"</span>])</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot!</span>( x, <span class="fu">g</span>.(x), seriestype<span class="op">=:</span>scatter, label<span class="op">=</span>L<span class="st">"x_{n+1} = g(x_n)"</span> )</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot!</span>( y, <span class="fu">h</span>.(y), seriestype<span class="op">=:</span>scatter, label<span class="op">=</span>L<span class="st">"y_{n+1} = h(y_n)"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(x[15], y[15]) = (1.2563147213300918, 0.0004396618681772324)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+<figure class="figure">
+<p><img src="L3 Stability and Conditioning_files/figure-html/cell-17-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+Here, we see that <span class="math inline">x_n \to \xi \approx 1.26 \in [1,2]</span> but <span class="math inline">y_{n} \to \widetilde{\xi} \approx 0</span> so the formulations <span class="math inline">g(x) = x</span> and <span class="math inline">h(x) = x</span> are equivalent, but they lead to different numerical methods.
+</div>
+<div style="background-color: #ddff99; padding: 10px; border-left: 5px solid #009933;">
+<p><strong>Definition.</strong></p>
+<p>Let <span class="math inline">x_n \to \xi</span>. Suppose that there exist <span class="math inline">\alpha\geq1</span> and <span class="math inline">\mu \geq 0</span> such that</p>
+<p><span class="math display">\begin{align}
+    \lim_{n\to\infty}  \frac{\left|x_{n+1} - \xi\right|}{\left|x_n - \xi\right|^\alpha} = \mu
+\end{align}</span></p>
+<ul>
+<li>If <span class="math inline">\alpha = 1</span> and <span class="math inline">\mu \in (0,1)</span>, we say the convergence is <em>linear</em>,</li>
+<li>If <span class="math inline">\alpha = 1</span> but <span class="math inline">\mu = 0</span>, we say the convergence is <em>superlinear</em> (i.e.&nbsp;faster than linear),</li>
+<li>If <span class="math inline">\alpha = 1</span> and <span class="math inline">\mu = 1</span>, we say the convergence is <em>sublinear</em> (i.e slower than linear),</li>
+<li>If <span class="math inline">\alpha = 2</span>, we say the convergence is <em>quadratic</em>,…</li>
+</ul>
+<p>In the case where <em>(i)</em> <span class="math inline">\alpha = 1, \mu \in (0,1)</span> or <em>(ii)</em> <span class="math inline">\alpha&gt;1, \mu&gt; 0</span>, we say</p>
+<ul>
+<li><span class="math inline">x_n \to \xi</span> with <em>order</em> <span class="math inline">\alpha</span>,</li>
+<li><span class="math inline">\mu</span> is the <em>asymptotic error constant</em>, and</li>
+<li><span class="math inline">\rho := - \log_{10} \mu</span> is the <em>asymptotic rate of convergence</em>.</li>
+</ul>
+</div>
+<ul>
+<li>Define the errors <span class="math inline">e_n \coloneqq |x_{n}-\xi|</span>. Then, we have <span class="math inline">e_{n+1} \approx \mu e_{n}^\alpha</span>,</li>
+<li>For linear convergence, <span class="math inline">e_{n+N} \approx \mu^n e_N = 10^{-\rho n} e_N</span> and so <span class="math inline">\rho</span> measures the number of decimal digits of accuracy gained in one iteration (for sufficiently large <span class="math inline">N</span>)</li>
+</ul>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p><strong>Example (cont.).</strong></p>
+<p>Let’s go back to our example: <span class="math inline">f(x) = e^x - 2x - 1</span>. We have defined <span class="math inline">g(x) = \log( 2x + 1 )</span> and we are trying to solve the fixed point problem <span class="math inline">g(x) = x</span>.</p>
+<p>(This is mathematically equivalent to <span class="math inline">f(x) = 0</span>.)</p>
+<p>We have seen (numerically) that <span class="math inline">x_{n+1} = g(x_n)</span> with <span class="math inline">x_1</span> converges to <span class="math inline">\xi = g(\xi) \approx 1.26</span>. What is the order of convergence? What is the asymptotic error constant? Asymptotic rate of convergence?</p>
+</div>
+<div id="736d24e9" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ξ <span class="op">=</span> <span class="fl">1</span>; </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    ξ <span class="op">=</span> <span class="fu">g</span>(ξ)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this is e_{n+1}/e_{n} for n=1,...,14</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>μn <span class="op">=</span> @. <span class="fu">abs</span>( ( x[<span class="fl">2</span><span class="op">:</span><span class="fl">15</span>] <span class="op">-</span> ξ )<span class="op">/</span>(x[<span class="fl">1</span><span class="op">:</span><span class="fl">14</span>] <span class="op">-</span> ξ ))</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>μ, ρ <span class="op">=</span> μn[<span class="fl">14</span>], <span class="fu">-log10</span>( μn[<span class="fl">14</span>] );</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>μn</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>14-element Vector{Float64}:
+ 0.6154434977067526
+ 0.5965577179668249
+ 0.5851632047756364
+ 0.5784563522754123
+ 0.5745645700825062
+ 0.5723246633711306
+ 0.5710414920687147
+ 0.5703083577906018
+ 0.5698901195281622
+ 0.569651729099643
+ 0.569515916456726
+ 0.5694385647462568
+ 0.5693945163234355
+ 0.569369434946979</code></pre>
+</div>
+</div>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p>This quantity appears to converge to <span class="math inline">\mu \in (0,1)</span>. Therefore, we have <span class="math inline">x_n \to \xi</span> linearly with asymptotic error constant <span class="math inline">\mu</span> and asymptotic rate of convergence <span class="math inline">\rho</span> where these constants are as follows:</p>
+</div>
+<div id="b91af37e" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> (ξ, μ, ρ);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(ξ, μ, ρ) = (1.2564312086261695, 0.569369434946979, 0.24460585048403266)</code></pre>
+</div>
+</div>
+<div style="background-color: #cce0ff; padding: 10px; border-left: 5px solid #0066ff;">
+<p>Next time, we will prove (mathematically) that <span class="math inline">x_{n+1} = g(x_n)</span> converges linearly and show that <span class="math inline">\mu = |g'(\xi)|</span>. Our computed value of <span class="math inline">\mu</span> (after <span class="math inline">15</span> iterations) is close to this theoretical value:</p>
+</div>
+<div id="6daf0600" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>der_g <span class="op">=</span> x <span class="op">-&gt;</span> <span class="fl">2</span><span class="op">/</span>( <span class="fl">2</span><span class="op">*</span>x <span class="op">+</span> <span class="fl">1</span>);</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">der_g</span>( ξ )</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> μ;</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># relative error:</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(( <span class="fu">der_g</span>( ξ ) <span class="op">-</span> μ ) <span class="op">/</span> <span class="fu">der_g</span>( ξ ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>der_g(ξ) = 0.569336274081677
+μ = 0.569369434946979</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>5.824477872153201e-5</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/z\.umn\.edu\/Math5485");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./L2 How computers add.html" class="pagination-link" aria-label="How do computers add?">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How do computers add?</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./L4 Solving nonlinear equations in 1d.html" class="pagination-link" aria-label="Solving nonlinear equations in 1d">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Solving nonlinear equations in 1d</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
